@@ -17,6 +17,8 @@
 		8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */; };
 		8DFAAF7820EC754000F3ACD6 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */; };
 		8DFAAF7A20EC777B00F3ACD6 /* DrawPath+path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */; };
+		8DFAAF7C20EC7D1800F3ACD6 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */; };
+		8DFAAF8020EC80ED00F3ACD6 /* DataBaseAcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7F20EC80ED00F3ACD6 /* DataBaseAcess.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPath.swift; sourceTree = "<group>"; };
 		8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
 		8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrawPath+path.swift"; sourceTree = "<group>"; };
+		8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
+		8DFAAF7F20EC80ED00F3ACD6 /* DataBaseAcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataBaseAcess.swift; sourceTree = "<group>"; };
 		FDD458CA9FE9DDAA2B4F29B7 /* Pods-Draw.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Draw.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Draw/Pods-Draw.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -111,6 +115,7 @@
 				8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */,
 				8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */,
 				8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */,
+				8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -119,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */,
+				8DFAAF7F20EC80ED00F3ACD6 /* DataBaseAcess.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -251,9 +257,11 @@
 			files = (
 				8DFAAF5E20EC6E0B00F3ACD6 /* ViewController.swift in Sources */,
 				8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */,
+				8DFAAF7C20EC7D1800F3ACD6 /* DrawView.swift in Sources */,
 				8DFAAF7A20EC777B00F3ACD6 /* DrawPath+path.swift in Sources */,
 				8DFAAF7820EC754000F3ACD6 /* CanvasView.swift in Sources */,
 				8DFAAF5C20EC6E0B00F3ACD6 /* AppDelegate.swift in Sources */,
+				8DFAAF8020EC80ED00F3ACD6 /* DataBaseAcess.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
