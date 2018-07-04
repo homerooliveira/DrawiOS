@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38C1FA578B4DFF384743BB77 /* Pods_Draw.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D9E4CB43B82412AAF53BAA8 /* Pods_Draw.framework */; };
 		8DFAAF5C20EC6E0B00F3ACD6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF5B20EC6E0B00F3ACD6 /* AppDelegate.swift */; };
 		8DFAAF5E20EC6E0B00F3ACD6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF5D20EC6E0B00F3ACD6 /* ViewController.swift */; };
 		8DFAAF6120EC6E0B00F3ACD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */; };
@@ -15,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		65A9403B02092FCCA7F3A1BB /* Pods-Draw.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Draw.release.xcconfig"; path = "Pods/Target Support Files/Pods-Draw/Pods-Draw.release.xcconfig"; sourceTree = "<group>"; };
+		7D9E4CB43B82412AAF53BAA8 /* Pods_Draw.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Draw.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DFAAF5820EC6E0B00F3ACD6 /* Draw.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Draw.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DFAAF5B20EC6E0B00F3ACD6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DFAAF5D20EC6E0B00F3ACD6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +25,7 @@
 		8DFAAF6220EC6E0C00F3ACD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DFAAF6520EC6E0C00F3ACD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DFAAF6720EC6E0C00F3ACD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FDD458CA9FE9DDAA2B4F29B7 /* Pods-Draw.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Draw.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Draw/Pods-Draw.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38C1FA578B4DFF384743BB77 /* Pods_Draw.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B25C9562B2947A2BD904230 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7D9E4CB43B82412AAF53BAA8 /* Pods_Draw.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8DFAAF4F20EC6E0A00F3ACD6 = {
 			isa = PBXGroup;
 			children = (
 				8DFAAF5A20EC6E0B00F3ACD6 /* Draw */,
 				8DFAAF5920EC6E0B00F3ACD6 /* Products */,
+				9AADCA1E60778377C13A355F /* Pods */,
+				3B25C9562B2947A2BD904230 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,14 +69,47 @@
 		8DFAAF5A20EC6E0B00F3ACD6 /* Draw */ = {
 			isa = PBXGroup;
 			children = (
-				8DFAAF5B20EC6E0B00F3ACD6 /* AppDelegate.swift */,
-				8DFAAF5D20EC6E0B00F3ACD6 /* ViewController.swift */,
-				8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */,
-				8DFAAF6220EC6E0C00F3ACD6 /* Assets.xcassets */,
-				8DFAAF6420EC6E0C00F3ACD6 /* LaunchScreen.storyboard */,
+				8DFAAF6D20EC6E9900F3ACD6 /* Supporting Files */,
+				8DFAAF6E20EC6EA600F3ACD6 /* Controller */,
+				8DFAAF6F20EC6EB300F3ACD6 /* View */,
 				8DFAAF6720EC6E0C00F3ACD6 /* Info.plist */,
 			);
 			path = Draw;
+			sourceTree = "<group>";
+		};
+		8DFAAF6D20EC6E9900F3ACD6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				8DFAAF5B20EC6E0B00F3ACD6 /* AppDelegate.swift */,
+				8DFAAF6220EC6E0C00F3ACD6 /* Assets.xcassets */,
+				8DFAAF6420EC6E0C00F3ACD6 /* LaunchScreen.storyboard */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8DFAAF6E20EC6EA600F3ACD6 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				8DFAAF5D20EC6E0B00F3ACD6 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		8DFAAF6F20EC6EB300F3ACD6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9AADCA1E60778377C13A355F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FDD458CA9FE9DDAA2B4F29B7 /* Pods-Draw.debug.xcconfig */,
+				65A9403B02092FCCA7F3A1BB /* Pods-Draw.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +119,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8DFAAF6A20EC6E0C00F3ACD6 /* Build configuration list for PBXNativeTarget "Draw" */;
 			buildPhases = (
+				96981D01CDAAB48EB877833A /* [CP] Check Pods Manifest.lock */,
 				8DFAAF5420EC6E0A00F3ACD6 /* Sources */,
 				8DFAAF5520EC6E0A00F3ACD6 /* Frameworks */,
 				8DFAAF5620EC6E0A00F3ACD6 /* Resources */,
+				68984036B96E323F77DBF905 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -129,6 +179,49 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		68984036B96E323F77DBF905 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Draw/Pods-Draw-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Draw/Pods-Draw-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		96981D01CDAAB48EB877833A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Draw-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8DFAAF5420EC6E0A00F3ACD6 /* Sources */ = {
@@ -278,6 +371,7 @@
 		};
 		8DFAAF6B20EC6E0C00F3ACD6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FDD458CA9FE9DDAA2B4F29B7 /* Pods-Draw.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -296,6 +390,7 @@
 		};
 		8DFAAF6C20EC6E0C00F3ACD6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65A9403B02092FCCA7F3A1BB /* Pods-Draw.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
