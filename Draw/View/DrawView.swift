@@ -10,16 +10,25 @@ import UIKit
 
 class DrawView: UIView {
     var canvasView: CanvasView!
-    var drawPath = DrawPath(isCompleted: false, color: "black", points: [])
+    var drawPath = DrawPath(id: UUID().uuidString, isCompleted: false, color: "black", points: [])
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        configureView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.configureView()
+    }
+    
+    func configureView() {
         autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         canvasView = CanvasView(frame: .zero)
+        addSubview(canvasView)
         
-        DataBaseAcess.share.changes { (paths) in
+        DatabaseAcess.share.changes { (paths) in
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
                 if paths.isEmpty {
@@ -32,10 +41,6 @@ class DrawView: UIView {
         }
         
         becomeFirstResponder()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override func layoutSubviews() {
@@ -55,13 +60,13 @@ class DrawView: UIView {
         
         drawPath.points.append(point)
         
-        DataBaseAcess.share.save(drawPath)
+        DatabaseAcess.share.save(drawPath)
         canvasView.setNeedsDisplay()
     }
     
     func add(point: CGPoint) {
         drawPath.points.append(point)
-        DataBaseAcess.share.save(drawPath)
+        DatabaseAcess.share.save(drawPath)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -79,9 +84,7 @@ class DrawView: UIView {
         
         add(point: point)
         
-        drawPath.isCompleted = true
-        DataBaseAcess.share.save(drawPath)
-        drawPath = DrawPath(isCompleted: false, color: "black", points: [])
+        drawPath = DrawPath(id: UUID().uuidString,isCompleted: false, color: "black", points: [])
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

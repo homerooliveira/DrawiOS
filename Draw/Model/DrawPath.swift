@@ -10,6 +10,7 @@ import Foundation
 import CoreGraphics
 
 struct DrawPath {
+    var id: String
     var isCompleted: Bool
     var color: String
     var points: [CGPoint]
