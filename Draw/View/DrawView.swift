@@ -93,14 +93,13 @@ class DrawView: UIView {
         touchesEnded(touches, with: event)
     }
     
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Reset", style: .default, handler: {  [weak self] (action) in
+    func clear(){
+        DatabaseAcess.shared.deleteAllDrawPaths(with: room.identifier ?? "", completion: { [weak self] _ in
             guard let strongSelf = self else { return }
-            DatabaseAcess.shared.deleteAllDrawPaths(with: strongSelf.room.identifier ?? "", completion: {_ in 
-                
-            })
-            strongSelf.canvasView.clearCanvas()
-        }))
+            DispatchQueue.main.async {
+                strongSelf.canvasView.paths = []
+                strongSelf.canvasView.clearCanvas()
+            }
+        })
     }
 }
