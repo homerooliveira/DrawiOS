@@ -7,15 +7,10 @@
 //
 
 import Foundation
+import CoreGraphics
 
 struct DrawPath {
     var isCompleted: Bool
     var color: String
-    var points: [DrawPoint]
+    var points: [CGPoint]
 }
-
-@property BOOL completed;   // Set to YES once the user stops drawing this particular line
-@property NSString *color;  // The name of the color that this path is drawn in
-@property RLMArray<DrawPoint *><DrawPoint> *points;
-
-@property (readonly) UIBezierPath *path;
