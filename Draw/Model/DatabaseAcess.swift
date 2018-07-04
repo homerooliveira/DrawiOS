@@ -82,9 +82,16 @@ class DatabaseAcess {
     public func deleteAllDrawPaths(with roomID: String, completion: @escaping (Error?) -> Void) {
         fetchDrawPaths(for: roomID) { (paths) in
             if let paths = paths {
+                let group = DispatchGroup()
                 for path in paths {
-                    self.deleteDrawPath(with: path.identifier!, completion: { (error) in })
+                    group.enter()
+                    self.deleteDrawPath(with: path.identifier!, completion: { (error) in
+                        group.leave()
+                    })
                 }
+                group.notify(queue: .main, execute: {
+                    completion(nil)
+                })
             }
         }
     }

@@ -66,6 +66,7 @@ class RoomsViewController: UIViewController {
             if let room = sender as? Room {
                 if let destination = segue.destination as? DrawViewController {
                     destination.room = room
+                    destination.title = room.name
                 }
             }
         }
@@ -96,7 +97,12 @@ extension RoomsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let room = rooms[indexPath.row]
-            DatabaseAcess.shared.deleteRoom(with: room.identifier!) { (error) in }
+            DatabaseAcess.shared.deleteRoom(with: room.identifier!) { (error) in
+                if error == nil {
+                    DatabaseAcess.shared.deleteAllDrawPaths(with: room.identifier!, completion: { (error) in })
+                }
+            }
+            
         }
     }
 }

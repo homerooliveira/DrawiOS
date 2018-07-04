@@ -32,22 +32,13 @@ class DrawView: UIView {
         addSubview(canvasView)
 
         DatabaseAcess.shared.fetchDrawPathsObservable(for: room.identifier!) { (paths) in
-            DispatchQueue.main.async {
-                if let paths = paths {
-                    if paths.isEmpty {
-                        self.canvasView.setNeedsDisplay()
-                        self.canvasView.paths = []
-                        self.canvasView.clearCanvas()
-                        self.canvasView.setNeedsDisplay()
-                    } else {
-                        self.canvasView.paths = paths
-                        self.canvasView.setNeedsDisplay()
-                    }
-                } else {
-                    self.canvasView.setNeedsDisplay()
-                    self.canvasView.paths = []
+            if let paths = paths {
+                if paths.isEmpty {
                     self.canvasView.clearCanvas()
-                    self.canvasView.setNeedsDisplay()                }
+                } else {
+                    self.canvasView.paths = paths
+                    self.canvasView.setNeedsDisplay()
+                }
             }
         }
         
@@ -102,15 +93,39 @@ class DrawView: UIView {
         touchesEnded(touches, with: event)
     }
     
+<<<<<<< HEAD
     func clear(){
         DatabaseAcess.shared.deleteAllDrawPaths(with: room.identifier ?? "", completion: { [weak self] _ in
             guard let strongSelf = self else { return }
             DispatchQueue.main.async {
-                strongSelf.canvasView.setNeedsDisplay()
                 strongSelf.canvasView.paths = []
                 strongSelf.canvasView.clearCanvas()
-                strongSelf.canvasView.setNeedsDisplay()
             }
         })
+=======
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction.init(title: "Reset", style: .default, handler: {  [weak self] (action) in
+            guard let strongSelf = self else { return }
+        }))
+>>>>>>> d2169cb1336cc375ceea2b0e0d260804be20584c
     }
 }
+//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Reset Canvas?"
+//        message:@"This will clear the Realm database and reset the canvas. Are you sure you wish to proceed?"
+//        preferredStyle:UIAlertControllerStyleAlert];
+//
+//    typeof(self) __weak weakSelf = self;
+//    [alertController addAction:[UIAlertAction actionWithTitle:@"Reset"
+//        style:UIAlertActionStyleDefault
+//        handler:^(UIAlertAction *action) {
+//        [[RLMRealm defaultRealm] transactionWithBlock:^{
+//        [[RLMRealm defaultRealm] deleteAllObjects];
+//        }];
+//
+//        [weakSelf.canvasView clearCanvas];
+//        }]];
+//    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+//
+//    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
+//}
