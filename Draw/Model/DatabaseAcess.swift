@@ -62,10 +62,31 @@ class DatabaseAcess {
         DataManager.shared.queryObservable(query: query, eventType: .value, completion: completion)
     }
 
+    private func fetchDrawPaths(for roomID: String, completion: @escaping ([DrawPath]?) -> Void) {
+        let databaseReference: DatabaseReference = Database.database().reference()
+        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
+            "roomID").queryEqual(toValue: roomID)
+        DataManager.shared.query(query: query, completion: completion)
+    }
+
     // MARK : Delete
 
     public func deleteRoom(with roomID: String, completion: @escaping (Error?) -> Void) {
         DataManager.shared.delete(for: Room.typeName, with: roomID, completion: completion)
+    }
+
+    public func deleteDrawPath(with identifier: String, completion: @escaping (Error?) -> Void) {
+        DataManager.shared.delete(for: DrawPath.typeName, with: identifier, completion: completion)
+    }
+
+    public func deleteAllDrawPaths(with roomID: String, completion: @escaping (Error?) -> Void) {
+        fetchDrawPaths(for: roomID) { (paths) in
+            if let paths = paths {
+                for path in paths {
+                    self.deleteDrawPath(with: path.identifier!, completion: { (error) in })
+                }
+            }
+        }
     }
 
 }
