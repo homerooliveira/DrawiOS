@@ -17,7 +17,7 @@ class RoomsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        DatabaseAcess.share.fetchRoomsObservable { (rooms) in
+        DatabaseAcess.shared.fetchRoomsObservable { (rooms) in
             if let rooms = rooms {
                 self.rooms = rooms
                 self.tableview.reloadData()
@@ -36,13 +36,20 @@ class RoomsViewController: UIViewController {
             if let alert = alert, let textField = alert.textFields?.first {
                 guard let name = textField.text else { return }
                 
-                if name.isEmpty {
+                if name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                     
                 } else {
-                    let room = Room(identifier: UUID().uuidString, name: textField.text!)
-                    DatabaseAcess.share.save(with: room, completion: { (error) in
-                        if error == nil {
-                            
+                    DatabaseAcess.shared.fetchRoom(with: name, completion: { (rooms) in
+                        if rooms?.first != nil {
+                            let alert = Alerts.simpleAlert(with: "Sala já existe", and: "A sala \"\(name)\" já existe.")
+                            self.present(alert, animated: true, completion: nil)
+                        } else {
+                            let room = Room(identifier: UUID().uuidString, name: textField.text!)
+                            DatabaseAcess.shared.save(with: room, completion: { (error) in
+                                if error == nil {
+                                    
+                                }
+                            })
                         }
                     })
                 }

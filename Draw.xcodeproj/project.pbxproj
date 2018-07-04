@@ -18,6 +18,7 @@
 		8DFAAF7A20EC777B00F3ACD6 /* DrawPath+path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */; };
 		8DFAAF7C20EC7D1800F3ACD6 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */; };
 		8DFAAF8020EC80ED00F3ACD6 /* DatabaseAcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7F20EC80ED00F3ACD6 /* DatabaseAcess.swift */; };
+		911C2DAC20ED6B0200110DC8 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911C2DAB20ED6B0200110DC8 /* Alerts.swift */; };
 		9125614120ED4E0A00FF0CF4 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9125614020ED4E0A00FF0CF4 /* Room.swift */; };
 		9125614320ED4F6D00FF0CF4 /* RoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9125614220ED4F6D00FF0CF4 /* RoomsViewController.swift */; };
 		91CBD4F320ED3C0800693394 /* CloudConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CBD4F120ED3C0700693394 /* CloudConvertible.swift */; };
@@ -40,6 +41,7 @@
 		8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrawPath+path.swift"; sourceTree = "<group>"; };
 		8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		8DFAAF7F20EC80ED00F3ACD6 /* DatabaseAcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAcess.swift; sourceTree = "<group>"; };
+		911C2DAB20ED6B0200110DC8 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		9125614020ED4E0A00FF0CF4 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		9125614220ED4F6D00FF0CF4 /* RoomsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsViewController.swift; sourceTree = "<group>"; };
 		91CBD4F120ED3C0700693394 /* CloudConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudConvertible.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		8DFAAF7220EC72B800F3ACD6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				911C2DAB20ED6B0200110DC8 /* Alerts.swift */,
 				91CBD4F120ED3C0700693394 /* CloudConvertible.swift */,
 				91CBD4F220ED3C0800693394 /* DataManager.swift */,
 				8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */,
@@ -277,6 +280,7 @@
 				9125614320ED4F6D00FF0CF4 /* RoomsViewController.swift in Sources */,
 				8DFAAF5C20EC6E0B00F3ACD6 /* AppDelegate.swift in Sources */,
 				91CBD4F420ED3C0800693394 /* DataManager.swift in Sources */,
+				911C2DAC20ED6B0200110DC8 /* Alerts.swift in Sources */,
 				8DFAAF8020EC80ED00F3ACD6 /* DatabaseAcess.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

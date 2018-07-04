@@ -12,7 +12,7 @@ import Firebase
 
 class DataManager {
 
-    static let sharedInstance = DataManager()
+    static let shared = DataManager()
 
     private init() {}
 

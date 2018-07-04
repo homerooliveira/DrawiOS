@@ -24,7 +24,7 @@ class DrawViewController: UIViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        DatabaseAcess.share.removeAllObservers()
+        DatabaseAcess.shared.removeAllObservers()
     }
 }
 

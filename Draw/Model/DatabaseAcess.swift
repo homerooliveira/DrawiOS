@@ -30,7 +30,7 @@ extension DrawPath {
 
 class DatabaseAcess {
     
-    static let share = DatabaseAcess()
+    static let shared = DatabaseAcess()
     
     let database = Database.database().reference()
     
@@ -44,7 +44,7 @@ class DatabaseAcess {
         let databaseReference: DatabaseReference = Database.database().reference()
         let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
             "roomID").queryEqual(toValue: roomID)
-        DataManager.sharedInstance.queryObservable(query: query, eventType: .value, completion: completion)
+        DataManager.shared.queryObservable(query: query, eventType: .value, completion: completion)
     }
     
     func removeAllObservers() {
@@ -54,11 +54,11 @@ class DatabaseAcess {
     // MARK: SAVE
 
     public func save(with drawPath: DrawPath, completion: @escaping (Error?) -> Void) {
-        DataManager.sharedInstance.save(data: drawPath, typeName: DrawPath.typeName, completion: completion)
+        DataManager.shared.save(data: drawPath, typeName: DrawPath.typeName, completion: completion)
     }
 
     public func save(with room: Room, completion: @escaping (Error?) -> Void) {
-        DataManager.sharedInstance.save(data: room, typeName: Room.typeName, completion: completion)
+        DataManager.shared.save(data: room, typeName: Room.typeName, completion: completion)
     }
 
     func savePoint(_ drawPath: DrawPath) {
@@ -69,6 +69,13 @@ class DatabaseAcess {
     }
 
     public func fetchRoomsObservable(completion: @escaping ([Room]?) -> Void) {
-        DataManager.sharedInstance.fetchObservable(eventType: DataEventType.value, typeName: Room.typeName, completion: completion)
+        DataManager.shared.fetchObservable(eventType: DataEventType.value, typeName: Room.typeName, completion: completion)
+    }
+
+    public func fetchRoom(with name: String, completion: @escaping ([Room]?) -> Void) {
+        let databaseReference: DatabaseReference = Database.database().reference()
+        let query = databaseReference.child(Room.typeName).queryOrdered(byChild:
+            "name").queryEqual(toValue: name)
+        DataManager.shared.query(query: query, completion: completion)
     }
 }

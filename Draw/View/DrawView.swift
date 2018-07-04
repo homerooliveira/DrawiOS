@@ -31,7 +31,7 @@ class DrawView: UIView {
         canvasView = CanvasView(frame: .zero)
         addSubview(canvasView)
 
-        DatabaseAcess.share.fetchDrawPathsObservable(for: room.identifier!) { (paths) in
+        DatabaseAcess.shared.fetchDrawPathsObservable(for: room.identifier!) { (paths) in
             if let paths = paths {
                 if paths.isEmpty {
                     self.canvasView.clearCanvas()
@@ -62,14 +62,14 @@ class DrawView: UIView {
         
         add(point: point)
         
-        DatabaseAcess.share.save(with: drawPath) { (error) in }
+        DatabaseAcess.shared.save(with: drawPath) { (error) in }
         canvasView.add(drawPath: drawPath)
         canvasView.setNeedsDisplay()
     }
     
     func add(point: CGPoint) {
         drawPath.points.append(point)
-        DatabaseAcess.share.save(with: drawPath) { (error) in }
+        DatabaseAcess.shared.save(with: drawPath) { (error) in }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
