@@ -9,25 +9,6 @@
 import Foundation
 import FirebaseDatabase
 
-extension DrawPath {
-    init?(_ snapshot: DataSnapshot) {
-        guard let value = snapshot.value as? [String: Any] else { return nil }
-        guard let id = value["identifier"] as? String else { return nil }
-//        guard let isCompleted = value["isCompleted"] as? Bool else { return nil }
-        guard let color = value["color"] as? String else { return nil }
-        guard let points = value["points"] as? [[String: Double]]  else { return nil }
-        guard let roomID = value["roomID"] as? String  else { return nil }
-        
-        self.identifier = id
-        self.color = color
-        self.isCompleted = false
-        self.points = points.map { (dict) -> CGPoint in
-            return CGPoint(x: dict["x"] ?? 0, y: dict["y"] ?? 0)
-        }
-        self.roomID = roomID
-    }
-}
-
 class DatabaseAcess {
     
     static let shared = DatabaseAcess()
@@ -38,13 +19,6 @@ class DatabaseAcess {
     
     deinit {
         database.removeAllObservers()
-    }
-
-    public func fetchDrawPathsObservable(for roomID: String, completion: @escaping ([DrawPath]?) -> Void) {
-        let databaseReference: DatabaseReference = Database.database().reference()
-        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
-            "roomID").queryEqual(toValue: roomID)
-        DataManager.shared.queryObservable(query: query, eventType: .value, completion: completion)
     }
     
     func removeAllObservers() {
@@ -68,6 +42,8 @@ class DatabaseAcess {
         database.updateChildValues(values)
     }
 
+    // MARK : Fetch
+
     public func fetchRoomsObservable(completion: @escaping ([Room]?) -> Void) {
         DataManager.shared.fetchObservable(eventType: DataEventType.value, typeName: Room.typeName, completion: completion)
     }
@@ -78,4 +54,18 @@ class DatabaseAcess {
             "name").queryEqual(toValue: name)
         DataManager.shared.query(query: query, completion: completion)
     }
+
+    public func fetchDrawPathsObservable(for roomID: String, completion: @escaping ([DrawPath]?) -> Void) {
+        let databaseReference: DatabaseReference = Database.database().reference()
+        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
+            "roomID").queryEqual(toValue: roomID)
+        DataManager.shared.queryObservable(query: query, eventType: .value, completion: completion)
+    }
+
+    // MARK : Delete
+
+    public func deleteRoom(with roomID: String, completion: @escaping (Error?) -> Void) {
+        DataManager.shared.delete(for: Room.typeName, with: roomID, completion: completion)
+    }
+
 }

@@ -88,4 +88,11 @@ extension RoomsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: DrawViewController.gotoDrawViewControllerIdentifier, sender: rooms[indexPath.row])
     }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let room = rooms[indexPath.row]
+            DatabaseAcess.shared.deleteRoom(with: room.identifier!) { (error) in }
+        }
+    }
 }
