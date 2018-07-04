@@ -71,6 +71,10 @@ class RoomsViewController: UIViewController {
         }
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+
 }
 
 extension RoomsViewController: UITableViewDelegate, UITableViewDataSource {

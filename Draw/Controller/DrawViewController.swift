@@ -26,5 +26,9 @@ class DrawViewController: UIViewController {
         super.viewDidDisappear(animated)
         DatabaseAcess.shared.removeAllObservers()
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 }
 

@@ -94,24 +94,10 @@ class DrawView: UIView {
     }
     
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        
+        let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Reset", style: .default, handler: {  [weak self] (action) in
+            guard let strongSelf = self else { return }
+            strongSelf.canvasView.clearCanvas()
+        }))
     }
 }
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Reset Canvas?"
-//        message:@"This will clear the Realm database and reset the canvas. Are you sure you wish to proceed?"
-//        preferredStyle:UIAlertControllerStyleAlert];
-//
-//    typeof(self) __weak weakSelf = self;
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"Reset"
-//        style:UIAlertActionStyleDefault
-//        handler:^(UIAlertAction *action) {
-//        [[RLMRealm defaultRealm] transactionWithBlock:^{
-//        [[RLMRealm defaultRealm] deleteAllObjects];
-//        }];
-//
-//        [weakSelf.canvasView clearCanvas];
-//        }]];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
-//
-//    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
-//}
