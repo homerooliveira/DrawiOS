@@ -97,6 +97,9 @@ class DrawView: UIView {
         let alertController = UIAlertController(title: "", message: "", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Reset", style: .default, handler: {  [weak self] (action) in
             guard let strongSelf = self else { return }
+            DatabaseAcess.shared.deleteAllDrawPaths(with: strongSelf.room.identifier ?? "", completion: {_ in 
+                
+            })
             strongSelf.canvasView.clearCanvas()
         }))
     }
