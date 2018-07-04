@@ -16,6 +16,19 @@ class CanvasView: UIView {
         super.didMoveToSuperview()
         backgroundColor = .white
     }
+
+    func add(drawPath: DrawPath) {
+        paths.append(drawPath)
+    }
+
+    func update(drawPath: DrawPath) {
+        let index = paths.index { (drawPath) -> Bool in
+            drawPath.identifier == drawPath.identifier
+        }
+        if let indexDrawPath = index {
+            paths[indexDrawPath] = drawPath
+        }
+    }
     
     override func draw(_ rect: CGRect) {
         guard let context = UIGraphicsGetCurrentContext() else { return }

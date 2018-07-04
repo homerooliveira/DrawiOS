@@ -10,10 +10,13 @@ import UIKit
 
 class DrawView: UIView {
     var canvasView: CanvasView!
-    var drawPath = DrawPath(id: UUID().uuidString, isCompleted: false, color: "black", points: [])
+    var room: Room!
+    var drawPath: DrawPath!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, room: Room) {
         super.init(frame: frame)
+        self.room = room
+        drawPath = DrawPath(identifier: UUID().uuidString, isCompleted: false, color: "black", points: [], roomID: room.identifier!)
         configureView()
     }
     
@@ -27,15 +30,14 @@ class DrawView: UIView {
         
         canvasView = CanvasView(frame: .zero)
         addSubview(canvasView)
-        
-        DatabaseAcess.share.changes { (paths) in
-            DispatchQueue.main.async { [weak self] in
-                guard let strongSelf = self else { return }
+
+        DatabaseAcess.share.fetchDrawPathsObservable(for: room.identifier!) { (paths) in
+            if let paths = paths {
                 if paths.isEmpty {
-                    strongSelf.canvasView.clearCanvas()
+                    self.canvasView.clearCanvas()
                 } else {
-                    strongSelf.canvasView.paths = paths
-                    strongSelf.canvasView.setNeedsDisplay()
+                    self.canvasView.paths = paths
+                    self.canvasView.setNeedsDisplay()
                 }
             }
         }
@@ -58,15 +60,16 @@ class DrawView: UIView {
         guard let touchLocation = touches.first else { return }
         let point = touchLocation.location(in: canvasView)
         
-        drawPath.points.append(point)
+        add(point: point)
         
-        DatabaseAcess.share.save(drawPath)
+        DatabaseAcess.share.save(with: drawPath) { (error) in }
+        canvasView.add(drawPath: drawPath)
         canvasView.setNeedsDisplay()
     }
     
     func add(point: CGPoint) {
         drawPath.points.append(point)
-        DatabaseAcess.share.save(drawPath)
+        DatabaseAcess.share.save(with: drawPath) { (error) in }
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -74,7 +77,6 @@ class DrawView: UIView {
         let point = touchLocation.location(in: canvasView)
         
         add(point: point)
-        
         canvasView.setNeedsDisplay()
     }
     
@@ -84,7 +86,7 @@ class DrawView: UIView {
         
         add(point: point)
         
-        drawPath = DrawPath(id: UUID().uuidString,isCompleted: false, color: "black", points: [])
+        drawPath = DrawPath(identifier: UUID().uuidString, isCompleted: false, color: "black", points: [], roomID: room.identifier!)
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
