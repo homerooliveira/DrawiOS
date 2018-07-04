@@ -13,6 +13,9 @@
 		8DFAAF6120EC6E0B00F3ACD6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */; };
 		8DFAAF6320EC6E0C00F3ACD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF6220EC6E0C00F3ACD6 /* Assets.xcassets */; };
 		8DFAAF6620EC6E0C00F3ACD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF6420EC6E0C00F3ACD6 /* LaunchScreen.storyboard */; };
+		8DFAAF7120EC71DD00F3ACD6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7020EC71DD00F3ACD6 /* GoogleService-Info.plist */; };
+		8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */; };
+		8DFAAF7620EC733E00F3ACD6 /* DrawPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7520EC733E00F3ACD6 /* DrawPoint.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +28,9 @@
 		8DFAAF6220EC6E0C00F3ACD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8DFAAF6520EC6E0C00F3ACD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DFAAF6720EC6E0C00F3ACD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DFAAF7020EC71DD00F3ACD6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPath.swift; sourceTree = "<group>"; };
+		8DFAAF7520EC733E00F3ACD6 /* DrawPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPoint.swift; sourceTree = "<group>"; };
 		FDD458CA9FE9DDAA2B4F29B7 /* Pods-Draw.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Draw.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Draw/Pods-Draw.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,9 +75,11 @@
 		8DFAAF5A20EC6E0B00F3ACD6 /* Draw */ = {
 			isa = PBXGroup;
 			children = (
+				8DFAAF7020EC71DD00F3ACD6 /* GoogleService-Info.plist */,
 				8DFAAF6D20EC6E9900F3ACD6 /* Supporting Files */,
-				8DFAAF6E20EC6EA600F3ACD6 /* Controller */,
+				8DFAAF7220EC72B800F3ACD6 /* Model */,
 				8DFAAF6F20EC6EB300F3ACD6 /* View */,
+				8DFAAF6E20EC6EA600F3ACD6 /* Controller */,
 				8DFAAF6720EC6E0C00F3ACD6 /* Info.plist */,
 			);
 			path = Draw;
@@ -101,6 +109,15 @@
 				8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		8DFAAF7220EC72B800F3ACD6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */,
+				8DFAAF7520EC733E00F3ACD6 /* DrawPoint.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		9AADCA1E60778377C13A355F /* Pods */ = {
@@ -173,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DFAAF6620EC6E0C00F3ACD6 /* LaunchScreen.storyboard in Resources */,
+				8DFAAF7120EC71DD00F3ACD6 /* GoogleService-Info.plist in Resources */,
 				8DFAAF6320EC6E0C00F3ACD6 /* Assets.xcassets in Resources */,
 				8DFAAF6120EC6E0B00F3ACD6 /* Main.storyboard in Resources */,
 			);
@@ -229,6 +247,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DFAAF5E20EC6E0B00F3ACD6 /* ViewController.swift in Sources */,
+				8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */,
+				8DFAAF7620EC733E00F3ACD6 /* DrawPoint.swift in Sources */,
 				8DFAAF5C20EC6E0B00F3ACD6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -381,7 +401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.homero.oliveira.Draw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arquiteturaDeSoftware.Draw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -400,7 +420,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.homero.oliveira.Draw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.arquiteturaDeSoftware.Draw;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
