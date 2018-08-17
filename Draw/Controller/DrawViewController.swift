@@ -12,13 +12,30 @@ class DrawViewController: UIViewController {
 
     public var room: Room!
 
+    private let colorView = UIColorView()
+
     public static let gotoDrawViewControllerIdentifier = "gotoDrawViewControllerIdentifier"
+
+    private var drawView: DrawView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let drawView = DrawView(frame: view.bounds, room: room)
+        drawView = DrawView(frame: view.bounds, room: room)
         drawView.tag = 100
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(drawViewDidTapped))
+        drawView.addGestureRecognizer(tapGestureRecognizer)
         view.addSubview(drawView)
+
+        colorView.alpha = 0
+        colorView.delegate = self
+        view.addSubview(colorView)
+        colorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colorView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
+            colorView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0),
+            colorView.heightAnchor.constraint(equalToConstant: colorView.frame.size.height),
+            colorView.widthAnchor.constraint(equalToConstant: colorView.frame.size.width)
+            ])
     }
 
     @IBAction func clearButtonAction(_ sender: UIBarButtonItem) {
@@ -42,5 +59,22 @@ class DrawViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+
+    @IBAction func selectColorAction(_ sender: UIBarButtonItem) {
+        if colorView.alpha > 0 {
+            colorView.hide()
+        } else {
+            colorView.show()
+        }
+    }
+
+    @objc private func drawViewDidTapped() {
+        colorView.hide()
+    }
 }
 
+extension DrawViewController: UIColorViewDelegate {
+    func colorDidChange(color: UIColor) {
+        drawView.selectedColor = color
+    }
+}

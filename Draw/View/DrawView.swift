@@ -13,7 +13,7 @@ class DrawView: UIView {
     var room: Room!
 
     var lastPoint: CGPoint?
-    var selectedColor: UIColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
+    var selectedColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     
     init(frame: CGRect, room: Room) {
         super.init(frame: frame)

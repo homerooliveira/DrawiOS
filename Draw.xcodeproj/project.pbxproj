@@ -21,6 +21,8 @@
 		911C2DAC20ED6B0200110DC8 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911C2DAB20ED6B0200110DC8 /* Alerts.swift */; };
 		9125614120ED4E0A00FF0CF4 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9125614020ED4E0A00FF0CF4 /* Room.swift */; };
 		9125614320ED4F6D00FF0CF4 /* RoomsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9125614220ED4F6D00FF0CF4 /* RoomsViewController.swift */; };
+		916446642126573A002A70C3 /* UIColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916446632126573A002A70C3 /* UIColorView.swift */; };
+		916446662127077B002A70C3 /* UIColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916446652127077B002A70C3 /* UIColorPickerView.swift */; };
 		91CBD4F320ED3C0800693394 /* CloudConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CBD4F120ED3C0700693394 /* CloudConvertible.swift */; };
 		91CBD4F420ED3C0800693394 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CBD4F220ED3C0800693394 /* DataManager.swift */; };
 		91CBD4F620ED450D00693394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 91CBD4F520ED450D00693394 /* GoogleService-Info.plist */; };
@@ -44,6 +46,8 @@
 		911C2DAB20ED6B0200110DC8 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		9125614020ED4E0A00FF0CF4 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		9125614220ED4F6D00FF0CF4 /* RoomsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsViewController.swift; sourceTree = "<group>"; };
+		916446632126573A002A70C3 /* UIColorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorView.swift; sourceTree = "<group>"; };
+		916446652127077B002A70C3 /* UIColorPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorPickerView.swift; sourceTree = "<group>"; };
 		91CBD4F120ED3C0700693394 /* CloudConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudConvertible.swift; sourceTree = "<group>"; };
 		91CBD4F220ED3C0800693394 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		91CBD4F520ED450D00693394 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -123,10 +127,12 @@
 		8DFAAF6F20EC6EB300F3ACD6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				916446652127077B002A70C3 /* UIColorPickerView.swift */,
 				8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */,
 				8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */,
 				8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */,
 				8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */,
+				916446632126573A002A70C3 /* UIColorView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -270,6 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				916446642126573A002A70C3 /* UIColorView.swift in Sources */,
 				8DFAAF5E20EC6E0B00F3ACD6 /* DrawViewController.swift in Sources */,
 				8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */,
 				8DFAAF7C20EC7D1800F3ACD6 /* DrawView.swift in Sources */,
@@ -278,6 +285,7 @@
 				8DFAAF7820EC754000F3ACD6 /* CanvasView.swift in Sources */,
 				91CBD4F320ED3C0800693394 /* CloudConvertible.swift in Sources */,
 				9125614320ED4F6D00FF0CF4 /* RoomsViewController.swift in Sources */,
+				916446662127077B002A70C3 /* UIColorPickerView.swift in Sources */,
 				8DFAAF5C20EC6E0B00F3ACD6 /* AppDelegate.swift in Sources */,
 				91CBD4F420ED3C0800693394 /* DataManager.swift in Sources */,
 				911C2DAC20ED6B0200110DC8 /* Alerts.swift in Sources */,
