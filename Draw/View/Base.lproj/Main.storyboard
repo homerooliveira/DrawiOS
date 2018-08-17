@@ -78,7 +78,7 @@
                         <viewLayoutGuide key="safeArea" id="f1U-UQ-Szf"/>
                     </view>
                     <navigationItem key="navigationItem" title="Salas" id="p2I-7c-3M1">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="IJu-5j-aUk">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="IJu-5j-aUk">
                             <connections>
                                 <action selector="addRoomAction:" destination="cqI-xf-zdV" id="HPr-a8-6x9"/>
                             </connections>
