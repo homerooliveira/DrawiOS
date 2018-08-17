@@ -184,6 +184,18 @@ class DataManager {
         }
     }
 
+    public func queryObservableChildRemoved<T: CloudConvertible>(query: DatabaseQuery,
+                                                               completion: @escaping (T?) -> Void) {
+        
+        query.observe(.childRemoved) { (dataSnapshot) in
+            if let value = dataSnapshot.value as? [String: Any] {
+                completion(T.init(value))
+            } else {
+                completion(nil)
+            }
+        }
+    }
+
     // MARK: - Firebase User
 
 //    public func login(with email: String, and password: String, completion: @escaping (AuthDataResult?, Error?) -> Void) {

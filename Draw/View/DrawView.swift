@@ -9,14 +9,15 @@
 import UIKit
 
 class DrawView: UIView {
-    var canvasView: CanvasView!
+    var canvasView = CanvasView(frame: .zero)
     var room: Room!
-    var drawPath: DrawPath!
+
+    var lastPoint: CGPoint?
+    var selectedColor: UIColor = #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1)
     
     init(frame: CGRect, room: Room) {
         super.init(frame: frame)
         self.room = room
-        drawPath = DrawPath(identifier: UUID().uuidString, isCompleted: false, color: "black", points: [], roomID: room.identifier!)
         configureView()
     }
     
@@ -26,32 +27,35 @@ class DrawView: UIView {
     }
     
     func configureView() {
-        autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        canvasView = CanvasView(frame: .zero)
         addSubview(canvasView)
+        canvasView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            canvasView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            canvasView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            canvasView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            canvasView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
+            ])
 
-        DatabaseAcess.shared.fetchDrawPathsObservable(for: room.identifier!) { (paths) in
+        DatabaseAcess.shared.fetchDrawPathAddedObservable(for: room.identifier!) { (drawPath) in
             DispatchQueue.main.async {
-                if let paths = paths {
-                    if paths.isEmpty {
-                        self.canvasView.setNeedsDisplay()
-                        self.canvasView.paths = []
-                        self.canvasView.clearCanvas()
-                        self.canvasView.setNeedsDisplay()
-                    } else {
-                        self.canvasView.paths = paths
-                        self.canvasView.setNeedsDisplay()
-                    }
-                } else {
+                if let drawPath = drawPath {
                     self.canvasView.setNeedsDisplay()
-                    self.canvasView.paths = []
-                    self.canvasView.clearCanvas()
-                    self.canvasView.setNeedsDisplay()                }
+                    self.canvasView.add(drawPath: drawPath)
+                    self.canvasView.setNeedsDisplay()
+                }
             }
         }
-        
-        becomeFirstResponder()
+
+        DatabaseAcess.shared.fetchDrawPathRemovedObservable(for: room.identifier!) { (drawPath) in
+            DispatchQueue.main.async {
+                if let drawPath = drawPath {
+                    self.canvasView.setNeedsDisplay()
+                    self.canvasView.remove(drawPath: drawPath)
+                    self.canvasView.setNeedsDisplay()
+                }
+            }
+        }
+
     }
     
     override func layoutSubviews() {
@@ -67,35 +71,35 @@ class DrawView: UIView {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touchLocation = touches.first else { return }
-        let point = touchLocation.location(in: canvasView)
-        
-        add(point: point)
-        
-        DatabaseAcess.shared.save(with: drawPath) { (error) in }
-        canvasView.add(drawPath: drawPath)
-        canvasView.setNeedsDisplay()
-    }
-    
-    func add(point: CGPoint) {
-        drawPath.points.append(point)
-        DatabaseAcess.shared.save(with: drawPath) { (error) in }
+        lastPoint = touchLocation.location(in: canvasView)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touchLocation = touches.first else { return }
         let point = touchLocation.location(in: canvasView)
-        
-        add(point: point)
-        canvasView.setNeedsDisplay()
+
+        if let lastPoint = lastPoint {
+            let drawPath = DrawPath(color: selectedColor, point1: lastPoint, point2: point, roomID: room.identifier!)
+            DatabaseAcess.shared.save(with: drawPath) { (error) in }
+            canvasView.add(drawPath: drawPath)
+            canvasView.setNeedsDisplay()
+        }
+
+        lastPoint = point
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touchLocation = touches.first else { return }
         let point = touchLocation.location(in: canvasView)
+
+        if let lastPoint = lastPoint {
+            let drawPath = DrawPath(color: selectedColor, point1: lastPoint, point2: point, roomID: room.identifier!)
+            DatabaseAcess.shared.save(with: drawPath) { (error) in }
+            canvasView.add(drawPath: drawPath)
+            canvasView.setNeedsDisplay()
+        }
         
-        add(point: point)
-        
-        drawPath = DrawPath(identifier: UUID().uuidString, isCompleted: false, color: "black", points: [], roomID: room.identifier!)
+        lastPoint = point
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

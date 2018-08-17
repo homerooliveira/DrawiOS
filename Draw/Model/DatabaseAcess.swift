@@ -55,11 +55,18 @@ class DatabaseAcess {
         DataManager.shared.query(query: query, completion: completion)
     }
 
-    public func fetchDrawPathsObservable(for roomID: String, completion: @escaping ([DrawPath]?) -> Void) {
+    public func fetchDrawPathAddedObservable(for roomID: String, completion: @escaping (DrawPath?) -> Void) {
         let databaseReference: DatabaseReference = Database.database().reference()
         let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
             "roomID").queryEqual(toValue: roomID)
-        DataManager.shared.queryObservable(query: query, eventType: .value, completion: completion)
+        DataManager.shared.queryObservableChildAdded(query: query, completion: completion)
+    }
+
+    public func fetchDrawPathRemovedObservable(for roomID: String, completion: @escaping (DrawPath?) -> Void) {
+        let databaseReference: DatabaseReference = Database.database().reference()
+        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
+            "roomID").queryEqual(toValue: roomID)
+        DataManager.shared.queryObservableChildRemoved(query: query, completion: completion)
     }
 
     private func fetchDrawPaths(for roomID: String, completion: @escaping ([DrawPath]?) -> Void) {

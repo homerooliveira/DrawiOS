@@ -21,13 +21,9 @@ class CanvasView: UIView {
         paths.append(drawPath)
     }
 
-    func update(drawPath: DrawPath) {
-        let index = paths.index { (drawPath) -> Bool in
-            drawPath.identifier == drawPath.identifier
-        }
-        if let indexDrawPath = index {
-            paths[indexDrawPath] = drawPath
-        }
+    func remove(drawPath: DrawPath) {
+        guard let index = paths.index(where: { $0.identifier == drawPath.identifier }) else { return }
+        paths.remove(at: index)
     }
     
     override func draw(_ rect: CGRect) {
@@ -38,7 +34,7 @@ class CanvasView: UIView {
     }
     
     func draw(path: DrawPath, context: CGContext) {
-        let swatchColor = UIColor.black
+        let swatchColor = path.color
         context.setStrokeColor(swatchColor.cgColor)
         context.setLineWidth(path.path.lineWidth)
         context.addPath(path.path.cgPath)
