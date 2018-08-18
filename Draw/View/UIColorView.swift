@@ -12,16 +12,16 @@ class UIColorView: UIView {
 
     var delegate: UIColorViewDelegate?
 
-    var marginTopBottom: CGFloat! {
-        return frame.size.height * 0.02
-    }
-
     var selectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) // Default color
+    var indexSelectedColor: Int?
+
+    private var margin: CGFloat = 0.0
 
     private let hideShowAnimationDuration = 0.5
 
     let collectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
+    private var collectionViewCellSize: CGFloat = 0.0
     let colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1),
                   #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1), #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 1), #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1), #colorLiteral(red: 0.3176470697, green: 0.07450980693, blue: 0.02745098062, alpha: 1), #colorLiteral(red: 0.3098039329, green: 0.2039215714, blue: 0.03921568766, alpha: 1), #colorLiteral(red: 0.1294117719, green: 0.2156862766, blue: 0.06666667014, alpha: 1),
                   #colorLiteral(red: 0.1019607857, green: 0.2784313858, blue: 0.400000006, alpha: 1), #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1), #colorLiteral(red: 0.521568656, green: 0.1098039225, blue: 0.05098039284, alpha: 1), #colorLiteral(red: 0.5058823824, green: 0.3372549117, blue: 0.06666667014, alpha: 1), #colorLiteral(red: 0.1960784346, green: 0.3411764801, blue: 0.1019607857, alpha: 1),
@@ -34,67 +34,82 @@ class UIColorView: UIView {
     let colorPickerView = UIColorPickerView(frame: .zero)
     let colorPickerSelectetColorView = UIView(frame: .zero)
 
-    let selectButton = UIButton(frame: .zero)
     let segmentedControl = UISegmentedControl(items: ["Colors", "Custom"])
 
     // MARK: - Init
+
     init() {
         let screenHeight = UIScreen.main.bounds.size.height
         let screenWidth = UIScreen.main.bounds.size.width
         let smallerSize = screenHeight < screenWidth ? screenHeight : screenWidth
-        let size = smallerSize * 0.8
-        let frame = CGRect(x: 0, y: 0, width: size, height: size)
+        let height = smallerSize * 0.9
+        margin = height * 0.02
+        collectionViewCellSize = (height - (10 * margin) - segmentedControl.frame.size.height) / 8
+        let width = (collectionViewCellSize * 6) + margin * 7
+
+        let frame = CGRect(x: 0, y: 0, width: width, height: height)
         super.init(frame: frame)
 
-        layer.cornerRadius = size * 0.02
+        layer.cornerRadius = width * 0.02
         layer.borderWidth = 1
-        layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
         clipsToBounds = true
 
+        setBlurView()
         setControls()
         setCollectionView()
         alpha = 0
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    private func setBlurView() {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            blurView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            blurView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            blurView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
+            ])
+    }
+
     private func setCollectionView() {
         addSubview(collectionView)
-        let collectionViewHeight =
-            frame.size.height - segmentedControl.frame.size.height - selectButton.frame.size.height - 4 * marginTopBottom
-        let collectionViewWidth = collectionViewHeight * 0.75
-        let collectionViewFrame = CGRect(x: 0, y: 0, width: collectionViewWidth, height: collectionViewHeight)
-        collectionView.frame = collectionViewFrame
+
+        indexSelectedColor = colors.index(where: { (color) -> Bool in color == selectedColor })
+
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            let space = collectionViewFrame.size.width * 0.03
-            layout.minimumLineSpacing = space
-            layout.minimumInteritemSpacing = space
-            layout.sectionInset.top = space
-            layout.sectionInset.right = space
-            layout.sectionInset.bottom = space
-            layout.sectionInset.left = space
-            let itemSize = (collectionViewFrame.size.width - (7 * space)) / 6
-            layout.itemSize = CGSize(width: itemSize, height: itemSize)
+            layout.minimumLineSpacing = margin
+            layout.minimumInteritemSpacing = margin
+            layout.sectionInset.top = margin
+            layout.sectionInset.right = margin
+            layout.sectionInset.bottom = margin
+            layout.sectionInset.left = margin
+            layout.itemSize = CGSize(width: collectionViewCellSize, height: collectionViewCellSize)
         }
-        collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-        collectionView.layer.cornerRadius = collectionViewFrame.width * 0.02
+        collectionView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "identifier")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.heightAnchor.constraint(equalToConstant: collectionViewFrame.height),
-            collectionView.widthAnchor.constraint(equalToConstant: collectionViewFrame.width),
-            collectionView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
-            collectionView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0)
+            collectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 0),
+            collectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            collectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
             ])
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        updateCellsScale()
     }
 
     private func setColorPickerView() {
         let colorPickerViewHeight =
-            frame.size.height - segmentedControl.frame.size.height - selectButton.frame.size.height - 4 * marginTopBottom
+            frame.size.height - segmentedControl.frame.size.height - 4 * margin
         let colorPickerViewWidth = colorPickerViewHeight * 0.75
         let colorPickerViewFrame = CGRect(x: 0, y: 0, width: colorPickerViewWidth, height: colorPickerViewHeight)
 
@@ -106,7 +121,7 @@ class UIColorView: UIView {
         addSubview(colorPickerSelectetColorView)
         colorPickerSelectetColorView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            colorPickerSelectetColorView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: marginTopBottom),
+            colorPickerSelectetColorView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: margin),
             colorPickerSelectetColorView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
             colorPickerSelectetColorView.heightAnchor.constraint(equalToConstant: colorPickerSelectetColorView.frame.size.height),
             colorPickerSelectetColorView.widthAnchor.constraint(equalToConstant: colorPickerViewFrame.size.width)
@@ -121,8 +136,8 @@ class UIColorView: UIView {
         colorPickerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             colorPickerView.widthAnchor.constraint(equalToConstant: colorPickerViewFrame.width),
-            colorPickerView.topAnchor.constraint(equalTo: colorPickerSelectetColorView.bottomAnchor, constant: marginTopBottom),
-            colorPickerView.bottomAnchor.constraint(equalTo: selectButton.topAnchor, constant: -marginTopBottom),
+            colorPickerView.topAnchor.constraint(equalTo: colorPickerSelectetColorView.bottomAnchor, constant: margin),
+            colorPickerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin),
             colorPickerView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0)
             ])
     }
@@ -133,25 +148,10 @@ class UIColorView: UIView {
         addSubview(segmentedControl)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(equalTo: topAnchor, constant: marginTopBottom),
+            segmentedControl.topAnchor.constraint(equalTo: topAnchor, constant: margin),
             segmentedControl.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0)
             ])
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
-
-        addSubview(selectButton)
-        selectButton.setTitle("Select", for: .normal)
-        selectButton.backgroundColor = segmentedControl.tintColor
-        let selectButtonFrame = CGRect(x: 0, y: 0, width: segmentedControl.frame.size.width, height: segmentedControl.frame.size.height)
-        selectButton.frame = selectButtonFrame
-        selectButton.layer.cornerRadius = selectButtonFrame.size.height * 0.1
-        selectButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            selectButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -marginTopBottom),
-            selectButton.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
-            selectButton.heightAnchor.constraint(equalToConstant: selectButtonFrame.size.height),
-            selectButton.widthAnchor.constraint(equalToConstant: selectButtonFrame.size.width),
-            ])
-        selectButton.addTarget(self, action: #selector(selectedColorDidChange), for: .touchUpInside)
     }
 
     @objc private func segmentedControlValueChanged() {
@@ -166,13 +166,14 @@ class UIColorView: UIView {
     }
 
     @objc private func selectedColorDidChange() {
-        hide()
         if let delegate = delegate {
             delegate.colorDidChange(color: selectedColor)
         }
     }
 
     public func show() {
+        indexSelectedColor = colors.index(where: { (color) -> Bool in color == selectedColor })
+        collectionView.reloadData()
         UIView.animate(withDuration: hideShowAnimationDuration) {
             self.alpha = 1
         }
@@ -185,9 +186,13 @@ class UIColorView: UIView {
     }
 }
 
+// MARK: - UIColorViewDelegate
+
 protocol UIColorViewDelegate {
     func colorDidChange(color: UIColor)
 }
+
+// MARK: - UIColorView
 
 extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -200,14 +205,64 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "identifier", for: indexPath)
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        cell.backgroundColor = colors[indexPath.row]
+        let color = colors[indexPath.row]
+        cell.backgroundColor = color
+        if color == #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) {
+            cell.layer.borderWidth = 1
+            cell.layer.borderColor = layer.borderColor
+        }
+        cell.layer.cornerRadius = 2
+        cell.contentView.layer.masksToBounds = true
+
+        updateCellsScale()
+
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedColor = colors[indexPath.row]
+        indexSelectedColor = indexPath.row
+        updateCellsScale()
+        selectedColorDidChange()
+        
+    }
+
+    // MARK: - Update Cells Scale
+
+    internal func updateCellsScale() {
+        for colorCell in collectionView.visibleCells {
+            resetScale(cell: colorCell)
+            if let indexPath = collectionView.indexPath(for: colorCell) {
+                if let indexSelectedColor = indexSelectedColor {
+                    if indexSelectedColor == indexPath.row {
+                        upScale(cell: colorCell)
+                    }
+                }
+            }
+        }
+    }
+
+    // MARK: - Up Scale
+    
+    private func upScale(cell: UICollectionViewCell) {
+        UIView.animate(withDuration: 0, animations: {
+            let newScale: CGFloat = 1.3
+            cell.transform = CGAffineTransform(scaleX: newScale, y: newScale)
+            cell.layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            cell.layer.shadowOffset = CGSize(width: 0, height: 0)
+            cell.layer.shadowRadius = 0.8
+            cell.layer.shadowOpacity = 1
+            cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
+        })
+    }
+    
+    // MARK: - Reset Cell
+    
+    private func resetScale(cell: UICollectionViewCell) {
+        UIView.animate(withDuration: 0, animations: {
+            cell.transform = CGAffineTransform(scaleX: 1, y: 1)
+            cell.layer.shadowColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0)
+        })
     }
 }
 
@@ -215,5 +270,6 @@ extension UIColorView: UIColorPickerViewDelegate {
     func colorColorPickerTouched(sender: UIColorPickerView, color: UIColor, point: CGPoint, state: UIGestureRecognizerState) {
         colorPickerSelectetColorView.backgroundColor = color
         selectedColor = color
+        selectedColorDidChange()
     }
 }
