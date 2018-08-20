@@ -11,13 +11,18 @@ import UIKit
 class DrawView: UIView {
     var canvasView = CanvasView(frame: .zero)
     var room: Room!
+    var selectedAction: DrawActions = DrawActions.write {
+        didSet {
+            canvasView.currentAction = selectedAction
+        }
+    }
 
-    var lastPoint: CGPoint?
-    var selectedColor: UIColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    
+    // MARK: - Init
+
     init(frame: CGRect, room: Room) {
         super.init(frame: frame)
         self.room = room
+        canvasView.room = room
         configureView()
     }
     
@@ -25,7 +30,9 @@ class DrawView: UIView {
         super.init(coder: aDecoder)
         self.configureView()
     }
-    
+
+    // MARK: - Configure View
+
     func configureView() {
         addSubview(canvasView)
         canvasView.translatesAutoresizingMaskIntoConstraints = false
@@ -35,27 +42,6 @@ class DrawView: UIView {
             canvasView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
             canvasView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
             ])
-
-        DatabaseAcess.shared.fetchDrawPathAddedObservable(for: room.identifier!) { (drawPath) in
-            DispatchQueue.main.async {
-                if let drawPath = drawPath {
-                    self.canvasView.setNeedsDisplay()
-                    self.canvasView.add(drawPath: drawPath)
-                    self.canvasView.setNeedsDisplay()
-                }
-            }
-        }
-
-        DatabaseAcess.shared.fetchDrawPathRemovedObservable(for: room.identifier!) { (drawPath) in
-            DispatchQueue.main.async {
-                if let drawPath = drawPath {
-                    self.canvasView.setNeedsDisplay()
-                    self.canvasView.remove(drawPath: drawPath)
-                    self.canvasView.setNeedsDisplay()
-                }
-            }
-        }
-
     }
     
     override func layoutSubviews() {
@@ -68,53 +54,9 @@ class DrawView: UIView {
         frame.origin.x = (bounds.width - maxDimension) * 0.5
         canvasView.frame = frame
     }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchLocation = touches.first else { return }
-        lastPoint = touchLocation.location(in: canvasView)
-    }
-    
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchLocation = touches.first else { return }
-        let point = touchLocation.location(in: canvasView)
 
-        if let lastPoint = lastPoint {
-            let drawPath = DrawPath(color: selectedColor, point1: lastPoint, point2: point, roomID: room.identifier!)
-            DatabaseAcess.shared.save(with: drawPath) { (error) in }
-            canvasView.add(drawPath: drawPath)
-            canvasView.setNeedsDisplay()
-        }
+    func changeColor(to color: UIColor) {
+        canvasView.selectedColor = color
+    }
 
-        lastPoint = point
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchLocation = touches.first else { return }
-        let point = touchLocation.location(in: canvasView)
-
-        if let lastPoint = lastPoint {
-            let drawPath = DrawPath(color: selectedColor, point1: lastPoint, point2: point, roomID: room.identifier!)
-            DatabaseAcess.shared.save(with: drawPath) { (error) in }
-            canvasView.add(drawPath: drawPath)
-            canvasView.setNeedsDisplay()
-        }
-        
-        lastPoint = point
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchesEnded(touches, with: event)
-    }
-    
-    func clear(){
-        DatabaseAcess.shared.deleteAllDrawPaths(with: room.identifier ?? "", completion: { [weak self] _ in
-            guard let strongSelf = self else { return }
-            DispatchQueue.main.async {
-                strongSelf.canvasView.setNeedsDisplay()
-                strongSelf.canvasView.paths = []
-                strongSelf.canvasView.clearCanvas()
-                strongSelf.canvasView.setNeedsDisplay()
-            }
-        })
-    }
 }

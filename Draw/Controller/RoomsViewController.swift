@@ -99,7 +99,8 @@ extension RoomsViewController: UITableViewDelegate, UITableViewDataSource {
             let room = rooms[indexPath.row]
             DatabaseAcess.shared.deleteRoom(with: room.identifier!) { (error) in
                 if error == nil {
-                    DatabaseAcess.shared.deleteAllDrawPaths(with: room.identifier!, completion: { (error) in })
+                    let drawPathViewModel = DrawPathViewModel(room: room)
+                    drawPathViewModel.clearPath(completion: { (error) in })
                 }
             }
             

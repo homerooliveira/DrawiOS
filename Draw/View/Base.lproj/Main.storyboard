@@ -33,6 +33,16 @@
                                     <action selector="selectColorAction:" destination="BYZ-38-t0r" id="0ed-mc-7SU"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem title="Eraser" id="6il-vY-10w">
+                                <connections>
+                                    <action selector="eraserButtonDidTapped:" destination="BYZ-38-t0r" id="9dd-j9-hlO"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Draw" id="CzO-Dk-GZf">
+                                <connections>
+                                    <action selector="drawButtonDidTapped:" destination="BYZ-38-t0r" id="yRL-Em-gmr"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                 </viewController>

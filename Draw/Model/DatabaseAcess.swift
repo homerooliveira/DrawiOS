@@ -27,10 +27,6 @@ class DatabaseAcess {
 
     // MARK: SAVE
 
-    public func save(with drawPath: DrawPath, completion: @escaping (Error?) -> Void) {
-        DataManager.shared.save(data: drawPath, typeName: DrawPath.typeName, completion: completion)
-    }
-
     public func save(with room: Room, completion: @escaping (Error?) -> Void) {
         DataManager.shared.save(data: room, typeName: Room.typeName, completion: completion)
     }
@@ -55,52 +51,10 @@ class DatabaseAcess {
         DataManager.shared.query(query: query, completion: completion)
     }
 
-    public func fetchDrawPathAddedObservable(for roomID: String, completion: @escaping (DrawPath?) -> Void) {
-        let databaseReference: DatabaseReference = Database.database().reference()
-        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
-            "roomID").queryEqual(toValue: roomID)
-        DataManager.shared.queryObservableChildAdded(query: query, completion: completion)
-    }
-
-    public func fetchDrawPathRemovedObservable(for roomID: String, completion: @escaping (DrawPath?) -> Void) {
-        let databaseReference: DatabaseReference = Database.database().reference()
-        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
-            "roomID").queryEqual(toValue: roomID)
-        DataManager.shared.queryObservableChildRemoved(query: query, completion: completion)
-    }
-
-    private func fetchDrawPaths(for roomID: String, completion: @escaping ([DrawPath]?) -> Void) {
-        let databaseReference: DatabaseReference = Database.database().reference()
-        let query = databaseReference.child(DrawPath.typeName).queryOrdered(byChild:
-            "roomID").queryEqual(toValue: roomID)
-        DataManager.shared.query(query: query, completion: completion)
-    }
-
     // MARK : Delete
 
     public func deleteRoom(with roomID: String, completion: @escaping (Error?) -> Void) {
         DataManager.shared.delete(for: Room.typeName, with: roomID, completion: completion)
-    }
-
-    public func deleteDrawPath(with identifier: String, completion: @escaping (Error?) -> Void) {
-        DataManager.shared.delete(for: DrawPath.typeName, with: identifier, completion: completion)
-    }
-
-    public func deleteAllDrawPaths(with roomID: String, completion: @escaping (Error?) -> Void) {
-        fetchDrawPaths(for: roomID) { (paths) in
-            if let paths = paths {
-                let group = DispatchGroup()
-                for path in paths {
-                    group.enter()
-                    self.deleteDrawPath(with: path.identifier!, completion: { (error) in
-                        group.leave()
-                    })
-                }
-                group.notify(queue: .main, execute: {
-                    completion(nil)
-                })
-            }
-        }
     }
 
 }

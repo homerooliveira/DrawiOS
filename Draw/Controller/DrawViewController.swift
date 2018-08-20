@@ -43,7 +43,7 @@ class DrawViewController: UIViewController {
             let alert = UIAlertController(title: "Deseja limpar a tela?", message: nil, preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Sim", style: .default, handler: { [weak alert] (_) in
-                drawView.clear()
+                drawView.canvasView.clear()
             }))
             alert.addAction(UIAlertAction(title: "Não", style: .default, handler: { [weak alert] (_) in
             }))
@@ -71,10 +71,18 @@ class DrawViewController: UIViewController {
     @objc private func drawViewDidTapped() {
         colorView.hide()
     }
+
+    @IBAction func eraserButtonDidTapped(_ sender: UIBarButtonItem) {
+        drawView.selectedAction = .erase
+    }
+
+    @IBAction func drawButtonDidTapped(_ sender: UIBarButtonItem) {
+        drawView.selectedAction = .write
+    }
 }
 
 extension DrawViewController: UIColorViewDelegate {
     func colorDidChange(color: UIColor) {
-        drawView.selectedColor = color
+        drawView.changeColor(to: color)
     }
 }
