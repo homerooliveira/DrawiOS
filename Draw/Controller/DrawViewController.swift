@@ -11,20 +11,27 @@ import UIKit
 class DrawViewController: UIViewController {
 
     public var room: Room!
+    private var canvasView = UICanvasView()
 
     private let colorView = UIColorView()
 
     public static let gotoDrawViewControllerIdentifier = "gotoDrawViewControllerIdentifier"
-
-    private var drawView: DrawView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        drawView = DrawView(frame: view.bounds, room: room)
-        drawView.tag = 100
+        canvasView = UICanvasView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+        canvasView.room = room
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(drawViewDidTapped))
-        drawView.addGestureRecognizer(tapGestureRecognizer)
-        view.addSubview(drawView)
+        canvasView.addGestureRecognizer(tapGestureRecognizer)
+        view.addSubview(canvasView)
+
+        canvasView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            canvasView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            canvasView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            canvasView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0),
+            canvasView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0)
+            ])
 
         colorView.alpha = 0
         colorView.delegate = self
@@ -39,16 +46,14 @@ class DrawViewController: UIViewController {
     }
 
     @IBAction func clearButtonAction(_ sender: UIBarButtonItem) {
-        if let drawView = view.viewWithTag(100) as? DrawView {
-            let alert = UIAlertController(title: "Deseja limpar a tela?", message: nil, preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Sim", style: .default, handler: { [weak alert] (_) in
-                drawView.canvasView.clear()
-            }))
-            alert.addAction(UIAlertAction(title: "Não", style: .default, handler: { [weak alert] (_) in
-            }))
-            present(alert, animated: true)
-        }
+        let alert = UIAlertController(title: "Deseja limpar a tela?", message: nil, preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Não", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sim", style: .destructive, handler: { (_) in
+            self.canvasView.clear()
+        }))
+
+        present(alert, animated: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -73,16 +78,16 @@ class DrawViewController: UIViewController {
     }
 
     @IBAction func eraserButtonDidTapped(_ sender: UIBarButtonItem) {
-        drawView.selectedAction = .erase
+        canvasView.currentAction = .erase
     }
 
     @IBAction func drawButtonDidTapped(_ sender: UIBarButtonItem) {
-        drawView.selectedAction = .write
+        canvasView.currentAction = .write
     }
 }
 
 extension DrawViewController: UIColorViewDelegate {
     func colorDidChange(color: UIColor) {
-        drawView.changeColor(to: color)
+        canvasView.currentColor = color
     }
 }

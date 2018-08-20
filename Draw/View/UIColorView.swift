@@ -12,14 +12,14 @@ class UIColorView: UIView {
 
     var delegate: UIColorViewDelegate?
 
-    var selectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) // Default color
-    var indexSelectedColor: Int?
+    private var selectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) // Black's default color
+    private var indexSelectedColor: Int?
 
     private var margin: CGFloat = 0.0
 
     private let hideShowAnimationDuration = 0.5
 
-    let collectionView = UICollectionView(frame: .zero,
+    private let collectionView = UICollectionView(frame: .zero,
                                                 collectionViewLayout: UICollectionViewFlowLayout())
     private var collectionViewCellSize: CGFloat = 0.0
     let colors = [#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1), #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1), #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1),
@@ -31,10 +31,10 @@ class UIColorView: UIView {
                   #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1), #colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1), #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1), #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1),
                   #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1), #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1), #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1), #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1), #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1), #colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)]
 
-    let colorPickerView = UIColorPickerView(frame: .zero)
-    let colorPickerSelectetColorView = UIView(frame: .zero)
+    private let colorPickerView = UIColorPickerView(frame: .zero)
+    private let colorPickerSelectetColorView = UIView(frame: .zero)
 
-    let segmentedControl = UISegmentedControl(items: ["Colors", "Custom"])
+    private let segmentedControl = UISegmentedControl(items: ["Colors", "Custom"])
 
     // MARK: - Init
 
@@ -65,6 +65,8 @@ class UIColorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Blur View
+
     private func setBlurView() {
         let blurEffect = UIBlurEffect(style: .light)
         let blurView = UIVisualEffectView(effect: blurEffect)
@@ -78,34 +80,7 @@ class UIColorView: UIView {
             ])
     }
 
-    private func setCollectionView() {
-        addSubview(collectionView)
-
-        indexSelectedColor = colors.index(where: { (color) -> Bool in color == selectedColor })
-
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.minimumLineSpacing = margin
-            layout.minimumInteritemSpacing = margin
-            layout.sectionInset.top = margin
-            layout.sectionInset.right = margin
-            layout.sectionInset.bottom = margin
-            layout.sectionInset.left = margin
-            layout.itemSize = CGSize(width: collectionViewCellSize, height: collectionViewCellSize)
-        }
-        collectionView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "identifier")
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 0),
-            collectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-            collectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
-            ])
-        collectionView.delegate = self
-        collectionView.dataSource = self
-
-        updateCellsScale()
-    }
+    // MARK: - Color Picker
 
     private func setColorPickerView() {
         let colorPickerViewHeight =
@@ -142,6 +117,8 @@ class UIColorView: UIView {
             ])
     }
 
+    // MARK: - Controls
+
     private func setControls() {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.tintColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
@@ -154,6 +131,8 @@ class UIColorView: UIView {
         segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
     }
 
+    // MARK: - Segmented Control
+
     @objc private func segmentedControlValueChanged() {
         if segmentedControl.selectedSegmentIndex == 0 {
             colorPickerView.removeFromSuperview()
@@ -165,11 +144,15 @@ class UIColorView: UIView {
         }
     }
 
-    @objc private func selectedColorDidChange() {
+    // MARK: - Collor Did Change
+
+    @objc private func colorDidChange() {
         if let delegate = delegate {
             delegate.colorDidChange(color: selectedColor)
         }
     }
+
+    // MARK: - Show
 
     public func show() {
         indexSelectedColor = colors.index(where: { (color) -> Bool in color == selectedColor })
@@ -178,6 +161,8 @@ class UIColorView: UIView {
             self.alpha = 1
         }
     }
+
+    // MARK: - Hide
 
     public func hide() {
         UIView.animate(withDuration: hideShowAnimationDuration) {
@@ -195,6 +180,37 @@ protocol UIColorViewDelegate {
 // MARK: - UIColorView
 
 extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
+
+    private func setCollectionView() {
+        addSubview(collectionView)
+
+        indexSelectedColor = colors.index(where: { (color) -> Bool in color == selectedColor })
+
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.minimumLineSpacing = margin
+            layout.minimumInteritemSpacing = margin
+            layout.sectionInset.top = margin
+            layout.sectionInset.right = margin
+            layout.sectionInset.bottom = margin
+            layout.sectionInset.left = margin
+            layout.itemSize = CGSize(width: collectionViewCellSize, height: collectionViewCellSize)
+        }
+
+        collectionView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ColorTableViewCell")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 0),
+            collectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
+            collectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            ])
+        collectionView.delegate = self
+        collectionView.dataSource = self
+
+        updateCellsScale()
+    }
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -204,7 +220,7 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "identifier", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorTableViewCell", for: indexPath)
         let color = colors[indexPath.row]
         cell.backgroundColor = color
         if color == #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) {
@@ -223,8 +239,7 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
         selectedColor = colors[indexPath.row]
         indexSelectedColor = indexPath.row
         updateCellsScale()
-        selectedColorDidChange()
-        
+        colorDidChange()
     }
 
     // MARK: - Update Cells Scale
@@ -232,12 +247,12 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
     internal func updateCellsScale() {
         for colorCell in collectionView.visibleCells {
             resetScale(cell: colorCell)
-            if let indexPath = collectionView.indexPath(for: colorCell) {
-                if let indexSelectedColor = indexSelectedColor {
-                    if indexSelectedColor == indexPath.row {
-                        upScale(cell: colorCell)
-                    }
-                }
+            if let indexPath =
+                collectionView.indexPath(for: colorCell),
+                let indexSelectedColor = indexSelectedColor,
+                indexSelectedColor == indexPath.row {
+
+                upScale(cell: colorCell)
             }
         }
     }
@@ -270,6 +285,6 @@ extension UIColorView: UIColorPickerViewDelegate {
     func colorColorPickerTouched(sender: UIColorPickerView, color: UIColor, point: CGPoint, state: UIGestureRecognizerState) {
         colorPickerSelectetColorView.backgroundColor = color
         selectedColor = color
-        selectedColorDidChange()
+        colorDidChange()
     }
 }

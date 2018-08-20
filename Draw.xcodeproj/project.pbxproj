@@ -14,9 +14,8 @@
 		8DFAAF6320EC6E0C00F3ACD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF6220EC6E0C00F3ACD6 /* Assets.xcassets */; };
 		8DFAAF6620EC6E0C00F3ACD6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DFAAF6420EC6E0C00F3ACD6 /* LaunchScreen.storyboard */; };
 		8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */; };
-		8DFAAF7820EC754000F3ACD6 /* CanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */; };
+		8DFAAF7820EC754000F3ACD6 /* UICanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7720EC754000F3ACD6 /* UICanvasView.swift */; };
 		8DFAAF7A20EC777B00F3ACD6 /* DrawPath+path.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */; };
-		8DFAAF7C20EC7D1800F3ACD6 /* DrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */; };
 		8DFAAF8020EC80ED00F3ACD6 /* DatabaseAcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DFAAF7F20EC80ED00F3ACD6 /* DatabaseAcess.swift */; };
 		9100ABE4212AFE0700E1815A /* DrawPathViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100ABE3212AFE0700E1815A /* DrawPathViewModel.swift */; };
 		911C2DAC20ED6B0200110DC8 /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911C2DAB20ED6B0200110DC8 /* Alerts.swift */; };
@@ -40,9 +39,8 @@
 		8DFAAF6520EC6E0C00F3ACD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8DFAAF6720EC6E0C00F3ACD6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DFAAF7320EC72DA00F3ACD6 /* DrawPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPath.swift; sourceTree = "<group>"; };
-		8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasView.swift; sourceTree = "<group>"; };
+		8DFAAF7720EC754000F3ACD6 /* UICanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICanvasView.swift; sourceTree = "<group>"; };
 		8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrawPath+path.swift"; sourceTree = "<group>"; };
-		8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawView.swift; sourceTree = "<group>"; };
 		8DFAAF7F20EC80ED00F3ACD6 /* DatabaseAcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseAcess.swift; sourceTree = "<group>"; };
 		9100ABE3212AFE0700E1815A /* DrawPathViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawPathViewModel.swift; sourceTree = "<group>"; };
 		911C2DAB20ED6B0200110DC8 /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
@@ -132,9 +130,8 @@
 			children = (
 				916446652127077B002A70C3 /* UIColorPickerView.swift */,
 				8DFAAF5F20EC6E0B00F3ACD6 /* Main.storyboard */,
-				8DFAAF7720EC754000F3ACD6 /* CanvasView.swift */,
+				8DFAAF7720EC754000F3ACD6 /* UICanvasView.swift */,
 				8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */,
-				8DFAAF7B20EC7D1800F3ACD6 /* DrawView.swift */,
 				916446632126573A002A70C3 /* UIColorView.swift */,
 			);
 			path = View;
@@ -282,10 +279,9 @@
 				916446642126573A002A70C3 /* UIColorView.swift in Sources */,
 				8DFAAF5E20EC6E0B00F3ACD6 /* DrawViewController.swift in Sources */,
 				8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */,
-				8DFAAF7C20EC7D1800F3ACD6 /* DrawView.swift in Sources */,
 				8DFAAF7A20EC777B00F3ACD6 /* DrawPath+path.swift in Sources */,
 				9125614120ED4E0A00FF0CF4 /* Room.swift in Sources */,
-				8DFAAF7820EC754000F3ACD6 /* CanvasView.swift in Sources */,
+				8DFAAF7820EC754000F3ACD6 /* UICanvasView.swift in Sources */,
 				91CBD4F320ED3C0800693394 /* CloudConvertible.swift in Sources */,
 				9125614320ED4F6D00FF0CF4 /* RoomsViewController.swift in Sources */,
 				916446662127077B002A70C3 /* UIColorPickerView.swift in Sources */,
