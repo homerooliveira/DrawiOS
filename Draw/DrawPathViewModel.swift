@@ -12,6 +12,7 @@ import Firebase
 class DrawPathViewModel {
 
     var room: Room?
+    var paths: [DrawPath] = []
 
     init(room: Room) {
         self.room = room

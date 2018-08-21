@@ -17,8 +17,6 @@ class UICanvasView: UIView {
 
     public var room: Room?
 
-    private var paths: [DrawPath] = []
-
     public var currentAction = DrawActions.write
     public var currentColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1) // Black's default color
 
@@ -83,30 +81,35 @@ class UICanvasView: UIView {
     // MARK: - Add Path
 
     func add(drawPath: DrawPath) {
-        paths.append(drawPath)
+        drawPathViewModel?.paths.append(drawPath)
     }
 
     // MARK: - Remove Path
 
     func remove(drawPath: DrawPath) {
-        guard let index = paths.index(where: { $0.identifier == drawPath.identifier }) else { return }
-        paths.remove(at: index)
+        if let drawPathViewModel = drawPathViewModel,
+            let index = drawPathViewModel.paths.index(where: { $0.identifier == drawPath.identifier }) {
+
+            drawPathViewModel.paths.remove(at: index)
+            setNeedsDisplay()
+        }
     }
 
     // MARK: - Erase
 
     func erase() {
-        if let drawPath = paths.first(where: { (drawPath) -> Bool in eraserView.frame.contains(drawPath.path.currentPoint) }) {
-            if let drawPathViewModel = drawPathViewModel {
-                drawPathViewModel.delete(with: drawPath.identifier!) { (error) in
-                    if error != nil {
-                        self.paths.append(drawPath)
-                        self.setNeedsDisplay()
-                    }
+        if let drawPathViewModel = drawPathViewModel,
+            let drawPath = drawPathViewModel.paths
+                .first(where: { (drawPath) -> Bool in eraserView
+                    .frame.contains(drawPath.path.currentPoint) }) {
+            drawPathViewModel.delete(with: drawPath.identifier!) { (error) in
+                if error != nil {
+                    drawPathViewModel.paths.append(drawPath)
+                    self.setNeedsDisplay()
                 }
-                remove(drawPath: drawPath)
-                setNeedsDisplay()
             }
+            remove(drawPath: drawPath)
+            setNeedsDisplay()
         }
     }
 
@@ -114,7 +117,7 @@ class UICanvasView: UIView {
     
     func clear() {
         if let drawPathViewModel = drawPathViewModel {
-            for drawPath in paths {
+            for drawPath in drawPathViewModel.paths {
                 drawPathViewModel.delete(with: drawPath.identifier!) { (error) in
                     if error == nil {
                         self.remove(drawPath: drawPath)
@@ -127,9 +130,11 @@ class UICanvasView: UIView {
     // MARK: - Draw
 
     override func draw(_ rect: CGRect) {
-        guard let context = UIGraphicsGetCurrentContext() else { return }
-        paths.forEach { (path) in
-            draw(path: path, context: context)
+        if let drawPathViewModel = drawPathViewModel {
+            guard let context = UIGraphicsGetCurrentContext() else { return }
+            drawPathViewModel.paths.forEach { (path) in
+                draw(path: path, context: context)
+            }
         }
     }
     
