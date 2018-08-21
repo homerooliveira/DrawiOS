@@ -9,18 +9,18 @@
 import Foundation
 import FirebaseDatabase
 
-class DatabaseAcess {
-    
-    static let shared = DatabaseAcess()
-    
+class DataAcess {
+
+    static let shared = DataAcess()
+
     let database = Database.database().reference()
-    
+
     private init() {}
-    
+
     deinit {
         database.removeAllObservers()
     }
-    
+
     func removeAllObservers() {
         database.removeAllObservers()
     }
@@ -29,13 +29,6 @@ class DatabaseAcess {
 
     public func save(with room: Room, completion: @escaping (Error?) -> Void) {
         DataManager.shared.save(data: room, typeName: Room.typeName, completion: completion)
-    }
-
-    func savePoint(_ drawPath: DrawPath) {
-        guard let lastPoint = drawPath.points.last else { return }
-        let point = ["x": lastPoint.x, "y": lastPoint.y ]
-        let values = ["/Drawpath/\(drawPath.identifier)/points/": point]
-        database.updateChildValues(values)
     }
 
     // MARK : Fetch

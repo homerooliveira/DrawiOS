@@ -23,8 +23,9 @@ class UIColorPickerView : UIView {
             setNeedsDisplay()
         }
     }
-    
-    
+
+    // MARK: - Init
+
     private func initialize() {
         self.clipsToBounds = true
         let touchGesture = UILongPressGestureRecognizer(target: self, action: #selector(self.touchedColor(gestureRecognizer:)))
@@ -32,7 +33,7 @@ class UIColorPickerView : UIView {
         touchGesture.allowableMovement = CGFloat.greatestFiniteMagnitude
         self.addGestureRecognizer(touchGesture)
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
@@ -42,7 +43,9 @@ class UIColorPickerView : UIView {
         super.init(coder: aDecoder)
         initialize()
     }
-    
+
+    // MARK: - Draw
+
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
         
@@ -60,7 +63,7 @@ class UIColorPickerView : UIView {
             }
         }
     }
-    
+
     func getColorAtPoint(point:CGPoint) -> UIColor {
         let roundedPoint = CGPoint(x:elementSize * CGFloat(Int(point.x / elementSize)),
                                    y:elementSize * CGFloat(Int(point.y / elementSize)))
@@ -71,7 +74,7 @@ class UIColorPickerView : UIView {
         let hue = roundedPoint.x / self.bounds.width
         return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1.0)
     }
-    
+
     func getPointForColor(color:UIColor) -> CGPoint {
         var hue:CGFloat=0;
         var saturation:CGFloat=0;
@@ -93,7 +96,9 @@ class UIColorPickerView : UIView {
         
         return CGPoint(x: xPos, y: yPos)
     }
-    
+
+    // MARK: - Actions
+
     @objc func touchedColor(gestureRecognizer: UILongPressGestureRecognizer){
         let point = gestureRecognizer.location(in: self)
         let color = getColorAtPoint(point: point)

@@ -16,6 +16,8 @@ struct DrawPath {
     internal var points: [CGPoint] = []
     var roomID: String
 
+    // MARK: - Init
+
     init(color: UIColor, point1: CGPoint, point2: CGPoint, roomID: String) {
         self.identifier = UUID().uuidString
 
@@ -31,7 +33,27 @@ extension DrawPath: CloudConvertible {
     static var typeName: String {
         return "DrawPath"
     }
-    
+
+    // MARK: - Init
+
+    init?(_ fbObject: [String : Any]) {
+        guard let identifier = fbObject["identifier"] as? String,
+            let color = fbObject["color"] as? String,
+            let dicPoints = fbObject["points"] as? [[String: Double]],
+            let roomID = fbObject["roomID"] as? String else { return nil }
+
+        self.identifier = identifier
+        if let color = UIColor.fromString(colorRGBA: color) {
+            self.color = color
+        } else {
+            self.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        }
+        self.points = dicPoints.map { (dict) -> CGPoint in
+            return CGPoint(x: dict["x"] ?? 0, y: dict["y"] ?? 0)
+        }
+        self.roomID = roomID
+    }
+
     func intoFBObject() -> [String : Any] {
         var fbObject = [String: Any]()
         
@@ -46,24 +68,6 @@ extension DrawPath: CloudConvertible {
         fbObject["roomID"] = roomID
         
         return fbObject
-    }
-    
-    init?(_ fbObject: [String : Any]) {
-        guard let identifier = fbObject["identifier"] as? String,
-            let color = fbObject["color"] as? String,
-            let dicPoints = fbObject["points"] as? [[String: Double]],
-            let roomID = fbObject["roomID"] as? String else { return nil }
-        
-        self.identifier = identifier
-        if let color = UIColor.fromString(colorRGBA: color) {
-            self.color = color
-        } else {
-            self.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        }
-        self.points = dicPoints.map { (dict) -> CGPoint in
-            return CGPoint(x: dict["x"] ?? 0, y: dict["y"] ?? 0)
-        }
-        self.roomID = roomID
     }
 
 }

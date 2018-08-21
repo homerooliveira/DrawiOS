@@ -17,16 +17,9 @@ extension Room: CloudConvertible {
     static var typeName: String {
         return "Room"
     }
-    
-    func intoFBObject() -> [String : Any] {
-        var fbObject = [String: Any]()
-        
-        fbObject["identifier"] = identifier
-        fbObject["name"] = name
-        
-        return fbObject
-    }
-    
+
+    //MARK: - Init
+
     init?(_ fbObject: [String : Any]) {
         guard let identifier = fbObject["identifier"] as? String,
             let name = fbObject["name"] as? String else { return nil }
@@ -34,6 +27,13 @@ extension Room: CloudConvertible {
         self.identifier = identifier
         self.name = name
     }
-    
-    
+
+    func intoFBObject() -> [String : Any] {
+        var fbObject = [String: Any]()
+
+        fbObject["identifier"] = identifier
+        fbObject["name"] = name
+
+        return fbObject
+    }
 }

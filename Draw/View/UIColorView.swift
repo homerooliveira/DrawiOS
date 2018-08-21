@@ -177,7 +177,7 @@ protocol UIColorViewDelegate {
     func colorDidChange(color: UIColor)
 }
 
-// MARK: - UIColorView
+// MARK: - UICollectionViewDelegate
 
 extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -280,6 +280,8 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
         })
     }
 }
+
+// MARK: - UIColorPickerViewDelegate
 
 extension UIColorView: UIColorPickerViewDelegate {
     func colorColorPickerTouched(sender: UIColorPickerView, color: UIColor, point: CGPoint, state: UIGestureRecognizerState) {
