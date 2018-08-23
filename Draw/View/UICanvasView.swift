@@ -24,7 +24,13 @@ class UICanvasView: UIView {
 
     private var drawPathViewModel: DrawPathViewModel?
 
-    private let eraserView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+    public var eraserSize: CGFloat = 10 {
+        didSet {
+            eraserView.frame.size = CGSize(width: eraserSize, height: eraserSize)
+        }
+    }
+    public var pencilSize: CGFloat = 1
+    private let eraserView = UIView(frame: .zero)
     
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -60,6 +66,7 @@ class UICanvasView: UIView {
     // MARK: - Eraser View
 
     func setEraserView() {
+        eraserView.frame.size = CGSize(width: eraserSize, height: eraserSize)
         eraserView.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         eraserView.layer.borderWidth = 1
         eraserView.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
@@ -165,7 +172,7 @@ class UICanvasView: UIView {
 
         if currentAction == .write {
             if let lastPoint = lastPoint, let roomID = room?.identifier, let drawPathViewModel = drawPathViewModel {
-                let drawPath = DrawPath(color: currentColor, point1: lastPoint, point2: point, roomID: roomID)
+                let drawPath = DrawPath(color: currentColor, lineWidth: pencilSize, point1: lastPoint, point2: point, roomID: roomID)
                 drawPathViewModel.save(with: drawPath) { (error) in }
                 add(drawPath: drawPath)
                 setNeedsDisplay()
@@ -180,10 +187,9 @@ class UICanvasView: UIView {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touchLocation = touches.first else { return }
         let point = touchLocation.location(in: self)
-
         if currentAction == .write {
             if let lastPoint = lastPoint, let roomID = room?.identifier, let drawPathViewModel = drawPathViewModel {
-                let drawPath = DrawPath(color: currentColor, point1: lastPoint, point2: point, roomID: roomID)
+                let drawPath = DrawPath(color: currentColor, lineWidth: pencilSize, point1: lastPoint, point2: point, roomID: roomID)
                 drawPathViewModel.save(with: drawPath) { (error) in }
                 add(drawPath: drawPath)
                 setNeedsDisplay()

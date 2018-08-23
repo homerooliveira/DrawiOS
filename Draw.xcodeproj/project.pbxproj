@@ -26,6 +26,8 @@
 		91CBD4F320ED3C0800693394 /* CloudConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CBD4F120ED3C0700693394 /* CloudConvertible.swift */; };
 		91CBD4F420ED3C0800693394 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91CBD4F220ED3C0800693394 /* DataManager.swift */; };
 		91CBD4F620ED450D00693394 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 91CBD4F520ED450D00693394 /* GoogleService-Info.plist */; };
+		91D7A507212E52D000A339BE /* UISliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D7A506212E52D000A339BE /* UISliderView.swift */; };
+		91DD45DF212CEAA800E3E3EA /* ColorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DD45DE212CEAA800E3E3EA /* ColorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +53,8 @@
 		91CBD4F120ED3C0700693394 /* CloudConvertible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudConvertible.swift; sourceTree = "<group>"; };
 		91CBD4F220ED3C0800693394 /* DataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		91CBD4F520ED450D00693394 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		91D7A506212E52D000A339BE /* UISliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UISliderView.swift; sourceTree = "<group>"; };
+		91DD45DE212CEAA800E3E3EA /* ColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewController.swift; sourceTree = "<group>"; };
 		FDD458CA9FE9DDAA2B4F29B7 /* Pods-Draw.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Draw.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Draw/Pods-Draw.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -119,6 +123,7 @@
 		8DFAAF6E20EC6EA600F3ACD6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				91DD45DE212CEAA800E3E3EA /* ColorViewController.swift */,
 				8DFAAF5D20EC6E0B00F3ACD6 /* DrawViewController.swift */,
 				9125614220ED4F6D00FF0CF4 /* RoomsViewController.swift */,
 			);
@@ -133,6 +138,7 @@
 				8DFAAF7920EC777B00F3ACD6 /* DrawPath+path.swift */,
 				916446632126573A002A70C3 /* UIColorView.swift */,
 				912A5C0C212BD714000D85C1 /* UIImage+tint.swift */,
+				91D7A506212E52D000A339BE /* UISliderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -276,7 +282,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				912A5C0D212BD714000D85C1 /* UIImage+tint.swift in Sources */,
+				91D7A507212E52D000A339BE /* UISliderView.swift in Sources */,
 				916446642126573A002A70C3 /* UIColorView.swift in Sources */,
+				91DD45DF212CEAA800E3E3EA /* ColorViewController.swift in Sources */,
 				8DFAAF5E20EC6E0B00F3ACD6 /* DrawViewController.swift in Sources */,
 				8DFAAF7420EC72DA00F3ACD6 /* DrawPath.swift in Sources */,
 				8DFAAF7A20EC777B00F3ACD6 /* DrawPath+path.swift in Sources */,
@@ -429,6 +437,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JM5PLAS48Y;
 				INFOPLIST_FILE = Draw/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -448,6 +457,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JM5PLAS48Y;
 				INFOPLIST_FILE = Draw/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

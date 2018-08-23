@@ -19,16 +19,24 @@ class DrawViewController: UIViewController {
     private let eraserButton = UIButton(type: .custom)
 
     private let colorView = UIColorView()
+    private let eraserSliderView = UISliderView()
+    private let pencilSliderView = UISliderView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setCanvasView()
-        setColorView()
         setControls()
 
         let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(viewDidDoubleTap))
         doubleTapGestureRecognizer.numberOfTapsRequired = 2
         view.addGestureRecognizer(doubleTapGestureRecognizer)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setColorView()
+        setPencilSliderView()
+        setEraserSliderView()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -121,19 +129,65 @@ class DrawViewController: UIViewController {
             ])
     }
 
+    // MARK: - Eraser Slider View
+    
+    private func setEraserSliderView() {
+        eraserSliderView.alpha = 0
+        eraserSliderView.minimumValue = 10
+        eraserSliderView.value = 10
+        eraserSliderView.delegate = self
+        view.addSubview(eraserSliderView)
+        eraserSliderView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            eraserSliderView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
+            eraserSliderView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0),
+            eraserSliderView.heightAnchor.constraint(equalToConstant: eraserSliderView.frame.size.height),
+            eraserSliderView.widthAnchor.constraint(equalToConstant: eraserSliderView.frame.size.width)
+            ])
+    }
+
+    // MARK: - Eraser Slider View
+
+    private func setPencilSliderView() {
+        pencilSliderView.alpha = 0
+        pencilSliderView.minimumValue = 1
+        pencilSliderView.value = 1
+        pencilSliderView.delegate = self
+        view.addSubview(pencilSliderView)
+        pencilSliderView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            pencilSliderView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor, constant: 0),
+            pencilSliderView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor, constant: 0),
+            pencilSliderView.heightAnchor.constraint(equalToConstant: pencilSliderView.frame.size.height),
+            pencilSliderView.widthAnchor.constraint(equalToConstant: pencilSliderView.frame.size.width)
+            ])
+    }
+
     // MARK: - Actions
 
     @objc private func drawViewDidTapped() {
         colorView.hide()
+        eraserSliderView.hide()
+        pencilSliderView.hide()
     }
 
     @objc func drawButtonDidTapped() {
+        if pencilSliderView.alpha > 0 {
+            pencilSliderView.hide()
+        } else {
+            pencilSliderView.show()
+        }
         drawButton.setImage(drawButton.currentImage?.tint(color: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)), for: .normal)
         eraserButton.setImage(eraserButton.currentImage?.tint(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), for: .normal)
         canvasView.currentAction = .write
     }
 
     @IBAction func eraserButtonDidTapped(_ sender: UIBarButtonItem) {
+        if eraserSliderView.alpha > 0 {
+            eraserSliderView.hide()
+        } else {
+            eraserSliderView.show()
+        }
         drawButton.setImage(drawButton.currentImage?.tint(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)), for: .normal)
         eraserButton.setImage(eraserButton.currentImage?.tint(color: #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)), for: .normal)
         canvasView.currentAction = .erase
@@ -175,5 +229,17 @@ extension DrawViewController: UIColorViewDelegate {
     func colorDidChange(color: UIColor) {
         colorButton.backgroundColor = color
         canvasView.currentColor = color
+    }
+}
+
+// MARK: - UISliderViewDelegate
+
+extension DrawViewController: UISliderViewDelegate {
+    func valueDidChange(sliderView: UISliderView) {
+        if sliderView == eraserSliderView {
+            canvasView.eraserSize = CGFloat(sliderView.value)
+        } else {
+            canvasView.pencilSize = CGFloat(sliderView.value)
+        }
     }
 }

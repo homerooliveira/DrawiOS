@@ -13,15 +13,17 @@ import UIKit
 struct DrawPath {
     var identifier: String?
     var color: UIColor
+    var lineWidth: CGFloat!
     internal var points: [CGPoint] = []
     var roomID: String
 
     // MARK: - Init
 
-    init(color: UIColor, point1: CGPoint, point2: CGPoint, roomID: String) {
+    init(color: UIColor, lineWidth: CGFloat, point1: CGPoint, point2: CGPoint, roomID: String) {
         self.identifier = UUID().uuidString
 
         self.color = color
+        self.lineWidth = lineWidth
         self.points.append(point1)
         self.points.append(point2)
         self.roomID = roomID
@@ -39,6 +41,7 @@ extension DrawPath: CloudConvertible {
     init?(_ fbObject: [String : Any]) {
         guard let identifier = fbObject["identifier"] as? String,
             let color = fbObject["color"] as? String,
+            let lineWidth = fbObject["lineWidth"] as? CGFloat,
             let dicPoints = fbObject["points"] as? [[String: Double]],
             let roomID = fbObject["roomID"] as? String else { return nil }
 
@@ -48,6 +51,7 @@ extension DrawPath: CloudConvertible {
         } else {
             self.color = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }
+        self.lineWidth = lineWidth
         self.points = dicPoints.map { (dict) -> CGPoint in
             return CGPoint(x: dict["x"] ?? 0, y: dict["y"] ?? 0)
         }
@@ -59,6 +63,7 @@ extension DrawPath: CloudConvertible {
         
         fbObject["identifier"] = identifier
         fbObject["color"] = color.toString()
+        fbObject["lineWidth"] = lineWidth
         fbObject["points"] = points.map({ (point) -> [String: Any] in
             return [
                 "x": point.x,

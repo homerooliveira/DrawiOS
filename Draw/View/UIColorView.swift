@@ -50,12 +50,10 @@ class UIColorView: UIView {
         let frame = CGRect(x: 0, y: 0, width: width, height: height)
         super.init(frame: frame)
 
+        backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         layer.cornerRadius = width * 0.02
-        layer.borderWidth = 1
-        layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0.5)
-        clipsToBounds = true
 
-        setBlurView()
+        setShadow()
         setControls()
         setCollectionView()
         alpha = 0
@@ -65,19 +63,14 @@ class UIColorView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Blur View
+    // MARK: - Shadow
 
-    private func setBlurView() {
-        let blurEffect = UIBlurEffect(style: .light)
-        let blurView = UIVisualEffectView(effect: blurEffect)
-        addSubview(blurView)
-        blurView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            blurView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            blurView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
-            blurView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-            blurView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0)
-            ])
+    private func setShadow() {
+        layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        layer.shadowOffset = CGSize(width: 0, height: 0)
+        layer.shadowRadius = 5
+        layer.shadowOpacity = 1
+        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
 
     // MARK: - Color Picker
