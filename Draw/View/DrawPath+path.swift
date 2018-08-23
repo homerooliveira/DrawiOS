@@ -12,7 +12,6 @@ extension DrawPath {
     var path: UIBezierPath {
         let path = UIBezierPath()
         path.lineWidth = lineWidth
-        path.ad
         
         guard let first = self.points.first else { return path }
         path.move(to: first)
