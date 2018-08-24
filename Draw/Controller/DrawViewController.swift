@@ -101,8 +101,9 @@ class DrawViewController: UIViewController {
     private func setCanvasView() {
         canvasView = UICanvasView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
         canvasView.room = room
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(drawViewDidTapped))
-        canvasView.addGestureRecognizer(tapGestureRecognizer)
+
+        canvasView.delegate = self
+
         view.addSubview(canvasView)
         
         canvasView.translatesAutoresizingMaskIntoConstraints = false
@@ -151,6 +152,7 @@ class DrawViewController: UIViewController {
     private func setPencilSliderView() {
         pencilSliderView.alpha = 0
         pencilSliderView.minimumValue = 1
+//        pencilSliderView.maximumValue = 5
         pencilSliderView.value = 1
         pencilSliderView.delegate = self
         view.addSubview(pencilSliderView)
@@ -165,13 +167,9 @@ class DrawViewController: UIViewController {
 
     // MARK: - Actions
 
-    @objc private func drawViewDidTapped() {
+    @objc func drawButtonDidTapped() {
         colorView.hide()
         eraserSliderView.hide()
-        pencilSliderView.hide()
-    }
-
-    @objc func drawButtonDidTapped() {
         if pencilSliderView.alpha > 0 {
             pencilSliderView.hide()
         } else {
@@ -183,6 +181,8 @@ class DrawViewController: UIViewController {
     }
 
     @IBAction func eraserButtonDidTapped(_ sender: UIBarButtonItem) {
+        colorView.hide()
+        pencilSliderView.hide()
         if eraserSliderView.alpha > 0 {
             eraserSliderView.hide()
         } else {
@@ -194,6 +194,8 @@ class DrawViewController: UIViewController {
     }
 
     @objc private func colorButtonDidTapped() {
+        eraserSliderView.hide()
+        pencilSliderView.hide()
         if colorView.alpha > 0 {
             colorView.hide()
         } else {
@@ -221,6 +223,7 @@ class DrawViewController: UIViewController {
             }
         }
     }
+
 }
 
 // MARK: - UIColorViewDelegate
@@ -241,5 +244,15 @@ extension DrawViewController: UISliderViewDelegate {
         } else {
             canvasView.pencilSize = CGFloat(sliderView.value)
         }
+    }
+}
+
+// MARK: - UICanvasViewDelegate
+
+extension DrawViewController: UICanvasViewDelegate {
+    func touchesBegan() {
+        colorView.hide()
+        eraserSliderView.hide()
+        pencilSliderView.hide()
     }
 }

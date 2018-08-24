@@ -28,7 +28,7 @@ class UISliderView: UIView {
     }
     var maximumValue: Float! {
         didSet {
-            slider.maximumValue = minimumValue
+            slider.maximumValue = maximumValue
         }
     }
 
@@ -77,7 +77,7 @@ class UISliderView: UIView {
     private func setShadow() {
         layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = 5
+        layer.shadowRadius = 0.8
         layer.shadowOpacity = 1
         layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }

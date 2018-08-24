@@ -45,7 +45,7 @@ class UIColorView: UIView {
         let height = smallerSize * 0.9
         margin = height * 0.02
         collectionViewCellSize = (height - (10 * margin) - segmentedControl.frame.size.height) / 8
-        let width = (collectionViewCellSize * 6) + margin * 7
+        let width = (collectionViewCellSize * 6) + (margin * 7)
 
         let frame = CGRect(x: 0, y: 0, width: width, height: height)
         super.init(frame: frame)
@@ -68,7 +68,7 @@ class UIColorView: UIView {
     private func setShadow() {
         layer.shadowColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         layer.shadowOffset = CGSize(width: 0, height: 0)
-        layer.shadowRadius = 5
+        layer.shadowRadius = 0.8
         layer.shadowOpacity = 1
         layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: layer.cornerRadius).cgPath
     }
@@ -182,21 +182,25 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.minimumLineSpacing = margin
             layout.minimumInteritemSpacing = margin
-            layout.sectionInset.top = margin
-            layout.sectionInset.right = margin
-            layout.sectionInset.bottom = margin
-            layout.sectionInset.left = margin
+            layout.sectionInset.top = 0
+            layout.sectionInset.right = 0
+            layout.sectionInset.bottom = 0
+            layout.sectionInset.left = 0
             layout.itemSize = CGSize(width: collectionViewCellSize, height: collectionViewCellSize)
         }
+        let height = (collectionViewCellSize * 8) + (7 * margin)
+        let width = (collectionViewCellSize * 6) + (5 * margin)
+        collectionView.frame.size = CGSize(width: width, height: height)
 
-        collectionView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 0)
+        collectionView.clipsToBounds = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "ColorTableViewCell")
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 0),
-            collectionView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
-            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-            collectionView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            collectionView.heightAnchor.constraint(equalToConstant: height),
+            collectionView.widthAnchor.constraint(equalToConstant: width),
+            collectionView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin),
+            collectionView.centerXAnchor.constraint(equalTo: centerXAnchor)
             ])
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -216,9 +220,8 @@ extension UIColorView: UICollectionViewDelegate, UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorTableViewCell", for: indexPath)
         let color = colors[indexPath.row]
         cell.backgroundColor = color
-        if color == #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) {
+        if indexPath.row == 0 {
             cell.layer.borderWidth = 1
-            cell.layer.borderColor = layer.borderColor
         }
         cell.layer.cornerRadius = 2
         cell.contentView.layer.masksToBounds = true

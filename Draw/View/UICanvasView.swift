@@ -15,6 +15,8 @@ public enum DrawActions {
 
 class UICanvasView: UIView {
 
+    public var delegate: UICanvasViewDelegate?
+
     public var room: Room?
 
     public var currentAction = DrawActions.write
@@ -87,8 +89,17 @@ class UICanvasView: UIView {
 
     // MARK: - Add Path
 
-    func add(drawPath: DrawPath) {
+    private func add(drawPath: DrawPath) {
         drawPathViewModel?.paths.append(drawPath)
+    }
+
+    private func addDrawPath(from point1: CGPoint, to point2: CGPoint) {
+        if let roomID = room?.identifier, let drawPathViewModel = drawPathViewModel {
+            let drawPath = DrawPath(color: currentColor, lineWidth: pencilSize, point1: point1, point2: point2, roomID: roomID)
+            drawPathViewModel.save(with: drawPath) { (error) in }
+            add(drawPath: drawPath)
+            setNeedsDisplay()
+        }
     }
 
     // MARK: - Remove Path
@@ -140,22 +151,27 @@ class UICanvasView: UIView {
         if let drawPathViewModel = drawPathViewModel {
             guard let context = UIGraphicsGetCurrentContext() else { return }
             drawPathViewModel.paths.forEach { (path) in
-                draw(path: path, context: context)
+                draw(drawPath: path, context: context)
             }
         }
     }
     
-    func draw(path: DrawPath, context: CGContext) {
-        let swatchColor = path.color
+    func draw(drawPath: DrawPath, context: CGContext) {
+        let swatchColor = drawPath.color
+        context.setLineCap(.round)
+        context.setLineWidth(drawPath.lineWidth)
         context.setStrokeColor(swatchColor.cgColor)
-        context.setLineWidth(path.path.lineWidth)
-        context.addPath(path.path.cgPath)
+        context.setLineWidth(drawPath.path.lineWidth)
+        context.addPath(drawPath.path.cgPath)
         context.strokePath()
     }
 
     // MARK: - Touch events
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let delegate = delegate {
+            delegate.touchesBegan()
+        }
         guard let touchLocation = touches.first else { return }
         let point = touchLocation.location(in: self)
         if currentAction == .write {
@@ -171,11 +187,8 @@ class UICanvasView: UIView {
         let point = touchLocation.location(in: self)
 
         if currentAction == .write {
-            if let lastPoint = lastPoint, let roomID = room?.identifier, let drawPathViewModel = drawPathViewModel {
-                let drawPath = DrawPath(color: currentColor, lineWidth: pencilSize, point1: lastPoint, point2: point, roomID: roomID)
-                drawPathViewModel.save(with: drawPath) { (error) in }
-                add(drawPath: drawPath)
-                setNeedsDisplay()
+            if let lastPoint = lastPoint {
+                addDrawPath(from: lastPoint, to: point)
             }
             lastPoint = point
         } else if currentAction == .erase {
@@ -188,11 +201,8 @@ class UICanvasView: UIView {
         guard let touchLocation = touches.first else { return }
         let point = touchLocation.location(in: self)
         if currentAction == .write {
-            if let lastPoint = lastPoint, let roomID = room?.identifier, let drawPathViewModel = drawPathViewModel {
-                let drawPath = DrawPath(color: currentColor, lineWidth: pencilSize, point1: lastPoint, point2: point, roomID: roomID)
-                drawPathViewModel.save(with: drawPath) { (error) in }
-                add(drawPath: drawPath)
-                setNeedsDisplay()
+            if let lastPoint = lastPoint {
+                addDrawPath(from: lastPoint, to: point)
             }
             lastPoint = point
         } else if currentAction == .erase {
@@ -205,4 +215,8 @@ class UICanvasView: UIView {
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         touchesEnded(touches, with: event)
     }
+}
+
+protocol UICanvasViewDelegate {
+    func touchesBegan()
 }
